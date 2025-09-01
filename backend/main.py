@@ -1,6 +1,13 @@
-def main():
-    print("Hello from backend!")
+from fastapi import FastAPI
+
+from routes import text_ocr, user
+
+app = FastAPI()
+
+app.include_router(text_ocr.router, prefix="/ocr", tags=["ocr"])
+app.include_router(user.router, prefix="/user", tags=["user"])
 
 
-if __name__ == "__main__":
-    main()
+@app.get("/")
+async def hello():
+    return {"message": "hello world"}
