@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from uuid import uuid4
+from typing import List, Optional
 
 
 class User(BaseModel):
@@ -8,5 +9,13 @@ class User(BaseModel):
     email: str
 
 
-class PDF(BaseModel):
-    url: str
+class HighlighterOutput(BaseModel):
+    documentName: List[str]
+    documentId: List[str]
+    severityReport: List[str]
+    tags: List[str]
+    severity: List[str]
+
+
+class ErrorResponse(BaseModel):
+    detail: str
