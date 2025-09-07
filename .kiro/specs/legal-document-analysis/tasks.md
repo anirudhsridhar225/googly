@@ -1,16 +1,19 @@
 # Implementation Plan
 
-- [ ] 1. Set up enhanced data models and database schema
-  - Update existing models.py with comprehensive data structures for legal document analysis
-  - Create database schema for storing documents, analysis results, and clause metadata
-  - Implement data validation and serialization for all models
-  - _Requirements: 5.1, 5.2, 5.3_
+- [ ] 1. Set up enhanced data models and Supabase database schema
+  - Update existing models.py with comprehensive data structures for legal document analysis including privacy fields
+  - Create Supabase database schema for storing encrypted documents, analysis results, and clause metadata
+  - Add user_id, encryption_key_id, supabase_storage_path, and is_deleted fields to Document model
+  - Implement data validation and serialization for all models with privacy compliance
+  - _Requirements: 5.1, 5.2, 5.3, 8.1, 8.2_
 
-- [ ] 2. Implement core document processing service
+- [ ] 2. Implement core document processing service with Supabase encryption
   - Create document_processor.py service for text extraction from PDF, DOCX, and images
+  - Integrate document encryption before storing in Supabase storage
   - Integrate OCR capabilities using pytesseract for scanned documents
   - Implement text structure preservation and line positioning tracking
   - Add comprehensive error handling for unsupported formats and corrupted files
+  - Create secure document decryption for processing and analysis
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5_
 
 - [ ] 3. Develop clause extraction and identification service
@@ -35,19 +38,21 @@
   - Generate frontend-compatible highlighting data structures
   - _Requirements: 4.1, 4.2, 4.3, 4.5_
 
-- [ ] 6. Implement enhanced API endpoints for document analysis
-  - Update existing /ocr/categorise endpoint to handle comprehensive legal document analysis
-  - Create new endpoints for retrieving analysis results and highlighting data
-  - Implement document management endpoints for multiple document handling
+- [ ] 6. Implement enhanced API endpoints for document analysis with Supabase integration
+  - Update existing /ocr/categorise endpoint to handle comprehensive legal document analysis with Supabase storage
+  - Create new endpoints for retrieving analysis results and highlighting data from Supabase
+  - Implement document management endpoints for multiple document handling with encrypted storage
+  - Add privacy-focused deletion endpoints for permanent document removal from Supabase
   - Add proper error handling and response formatting for all endpoints
-  - _Requirements: 7.1, 7.2, 7.4_
+  - _Requirements: 7.1, 7.2, 7.4, 8.1, 8.2, 8.3_
 
-- [ ] 7. Create database integration and persistence layer
-  - Implement database models using SQLAlchemy or similar ORM
-  - Create repository pattern for document and analysis result storage
-  - Add database migration scripts for schema management
-  - Implement caching mechanisms for frequently accessed analysis results
-  - _Requirements: 7.3, 7.5_
+- [ ] 7. Create Supabase integration and persistence layer
+  - Implement Supabase client integration for encrypted document storage and database operations
+  - Create repository pattern for document and analysis result storage in Supabase
+  - Add Supabase database migration scripts for schema management
+  - Implement encryption/decryption utilities for secure document handling
+  - Add privacy-compliant data deletion methods for permanent removal from Supabase
+  - _Requirements: 7.3, 7.5, 8.1, 8.2, 8.5_
 
 - [ ] 8. Build document upload component for frontend
   - Create DocumentUpload.tsx component with file selection and upload functionality

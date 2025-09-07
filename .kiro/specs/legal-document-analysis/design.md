@@ -13,14 +13,16 @@ graph TB
     A[React Native Frontend] --> B[FastAPI Backend]
     B --> C[OCR Service]
     B --> D[LLM Analysis Service]
-    B --> E[Document Storage]
-    B --> F[Analysis Results Storage]
+    B --> E[Supabase Storage Service]
+    B --> F[Supabase Database]
     
     C --> G[PyPDF2/python-docx]
     C --> H[Tesseract OCR]
     D --> I[Google Gemini API]
-    E --> J[File System/Cloud Storage]
-    F --> K[SQLite/PostgreSQL]
+    E --> J[Encrypted Document Storage]
+    E --> K[Document Encryption/Decryption]
+    F --> L[Analysis Results & Metadata]
+    F --> M[User Management & Auth]
 ```
 
 ### Component Architecture
@@ -42,7 +44,9 @@ The system follows a layered architecture pattern:
   - Extract text from PDF, DOCX, and image files
   - Maintain document structure and line positioning
   - Handle OCR for scanned documents
-- **Dependencies**: PyPDF2, python-docx, pytesseract
+  - Encrypt documents before storing in Supabase
+  - Decrypt documents when needed for processing
+- **Dependencies**: PyPDF2, python-docx, pytesseract, cryptography
 
 #### 2. LLM Analysis Service
 - **Location**: `backend/services/llm_analyzer.py`
@@ -70,10 +74,15 @@ The system follows a layered architecture pattern:
 ### API Endpoints
 
 #### Document Analysis Endpoints
-- `POST /api/documents/analyze` - Upload and analyze documents
-- `GET /api/documents/{document_id}/results` - Retrieve analysis results
+- `POST /api/documents/analyze` - Upload, encrypt, and analyze documents in Supabase
+- `GET /api/documents/{document_id}/results` - Retrieve analysis results from Supabase
 - `GET /api/documents/{document_id}/highlights` - Get highlighting data
-- `GET /api/documents/` - List analyzed documents
+- `GET /api/documents/` - List analyzed documents from Supabase
+- `DELETE /api/documents/{document_id}` - Permanently delete encrypted document and all data from Supabase
+
+#### Privacy and Security Endpoints
+- `DELETE /api/user/documents` - Delete all user documents and analysis data
+- `GET /api/documents/{document_id}/privacy` - Get document privacy and retention info
 
 #### Health and Status Endpoints
 - `GET /api/health` - System health check
@@ -105,12 +114,15 @@ The system follows a layered architecture pattern:
 ```python
 class Document(BaseModel):
     id: str
+    user_id: str  # Links document to specific user for privacy
     name: str
     content_type: str
     upload_timestamp: datetime
-    file_path: str
-    text_content: str
+    supabase_storage_path: str  # Path in Supabase encrypted storage
+    encryption_key_id: str  # Reference to encryption key for this document
+    text_content: str  # Extracted text (stored encrypted in Supabase)
     analysis_status: AnalysisStatus
+    is_deleted: bool = False  # Soft delete flag for privacy compliance
 ```
 
 #### Clause Analysis Model
