@@ -38,3 +38,8 @@ class DB:
 
         self.db = firestore.client()
         return self.db
+
+
+PATH = "./googly-25c2b-firebase-adminsdk-fbsvc-248bab283b.json"
+db = DB(PATH)
+db = db.db_init()

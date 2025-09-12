@@ -4,8 +4,8 @@ from routes import text_ocr, user
 
 app = FastAPI()
 
-app.include_router(text_ocr.router, prefix="/ocr", tags=["ocr"])
-app.include_router(user.router, prefix="/user", tags=["user"])
+app.include_router(text_ocr.router, prefix="/api/ocr", tags=["ocr"])
+app.include_router(user.router, prefix="/api/user", tags=["user"])
 
 
 @app.get("/")
