@@ -1,22 +1,16 @@
-from fastapi import APIRouter, File, UploadFile, Form, HTTPException
-from fastapi.responses import JSONResponse
 from typing import List
-import PyPDF2 as pypdf
-import docx
-import io
+
+from fastapi import APIRouter, File, HTTPException, UploadFile
 
 import models
+from utils import VALID_FORMATS, extract_text_auto
 
 router = APIRouter()
 
-VALID_FORMATS = [
-    "application/pdf",
-    "application/msword",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-]
+# VALID_FORMATS imported from utils
 
 
-@router.get("")
+@router.get("/health")
 async def get_ocr():
     return {"message": "you've reached the ocr router"}
 
@@ -27,57 +21,59 @@ async def get_hex():
     return {"message": "hex_code"}
 
 
-@router.post("/categorise", response_model=models.HighlighterOutput, responses={
-    415:
-        {
-            "description": "Unsupported Media Type",
-            "model": models.ErrorResponse
-        },
+@router.post(
+    "/extract",
+    response_model=models.HighlighterOutput,
+    responses={
+        415: {"description": "Unsupported Media Type", "model": models.ErrorResponse},
+        400: {"description": "Bad Request", "model": models.ErrorResponse},
+    },
+)
+@router.post(
+    "/categorise",
+    include_in_schema=False,  # Backward-compatible alias
+)
+async def extract_text(files: List[UploadFile] = File(...)):
+    """Extract text from PDFs (text or scanned) and images using centralized utils.
 
-    400:
-        {
-            "description": "Bad Request",
-            "model": models.ErrorResponse
-        },
-})
-async def categorise_data(files: List[UploadFile] = File(...)):
-    # TODO: handle the post endpoint to post the pdf to the ai
-    file_names = []
-    data = []
+    Returns a HighlighterOutput where documentId holds the raw extracted text for each file.
+    """
+    file_names: List[str] = []
+    extracted_texts: List[str] = []
 
     for file in files:
         if file.content_type not in VALID_FORMATS:
-            raise HTTPException(status_code=415, detail="Only PDF allowed")
+            raise HTTPException(
+                status_code=415,
+                detail=(
+                    "Unsupported content type. "
+                    "Supported: application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document, and common image types."
+                ),
+            )
 
         file_names.append(str(file.filename))
         file_bytes = await file.read()
-        text = ""
+
+        # Legacy .doc is explicitly not supported
+        if file.content_type == "application/msword":
+            raise HTTPException(
+                status_code=415,
+                detail=(
+                    "Legacy .doc not supported. Please convert to .docx and try again."
+                ),
+            )
 
         try:
-            if file.content_type == "application/pdf":
-                reader = pypdf.PdfReader(io.BytesIO(file_bytes))
-                text = "".join(page.extract_text()
-                               or "" for page in reader.pages)
-
-            elif file.content_type == "application/msword":
-                raise HTTPException(
-                    status_code=415, detail="Legacy doc, not supported yet, please convert to docx and try again.")
-
-            elif file.content_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                doc = docx.Document(io.BytesIO(file_bytes))
-                text = "\n".join(p.text for p in doc.paragraphs)
-
+            text = extract_text_auto(file_bytes, file.content_type, file.filename)
         except Exception as e:
-            raise HTTPException(status_code=400, detail=f"Error reading {
-                                file.filename}: {e}")
+            raise HTTPException(status_code=400, detail=f"Error reading {file.filename}: {e}")
 
-        data.append(text)
+        extracted_texts.append(text or "")
 
-    # TODO: pass the data to the ocr model and process
     return models.HighlighterOutput(
         documentName=file_names,
-        documentId=data,
+        documentId=extracted_texts,
         severityReport=[],
         tags=[],
-        severity=[]
+        severity=[],
     )
