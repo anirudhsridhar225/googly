@@ -1,11 +1,13 @@
 import io
-from typing import Optional
+from typing import Optional, List
+import models
 
 import docx
 import PyPDF2 as pypdf
 import pytesseract
 from pdf2image import convert_from_bytes
 from PIL import Image
+from fastapi import UploadFile, HTTPException
 
 # Supported MIME types for the OCR endpoint
 VALID_FORMATS = [
@@ -118,7 +120,10 @@ def extract_text_auto(
     if content_type == "application/pdf":
         return extract_text_from_pdf_bytes(file_bytes)
 
-    if content_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+    if (
+        content_type
+        == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ):
         return extract_text_from_docx_bytes(file_bytes)
 
     if content_type == "application/msword":
@@ -141,3 +146,45 @@ def extract_text_auto(
     # Give up
     return ""
 
+
+async def extract_files(files: List[UploadFile]) -> models.HighlighterOutput:
+    file_names: List[str] = []
+    extracted_texts: List[str] = []
+
+    for file in files:
+        if file.content_type not in VALID_FORMATS:
+            raise HTTPException(
+                status_code=415,
+                detail=(
+                    "Unsupported content type. Supported: PDF, Word documents and image types like JPG and PNG."
+                ),
+            )
+
+        file_names.append(str(file.filename))
+        file_bytes = await file.read()
+
+        # Legacy .doc is explicitly not supported
+        if file.content_type == "application/msword":
+            raise HTTPException(
+                status_code=415,
+                detail=(
+                    "Legacy .doc not supported. Please convert to .docx and try again."
+                ),
+            )
+
+        try:
+            text = extract_text_auto(file_bytes, file.content_type, file.filename)
+        except Exception as e:
+            raise HTTPException(
+                status_code=400, detail=f"Error reading {file.filename}: {e}"
+            )
+
+        extracted_texts.append(text or "")
+
+    return models.HighlighterOutput(
+        documentName=file_names,
+        documentId=extracted_texts,
+        severityReport=[],
+        tags=[],
+        severity=[],
+    )
