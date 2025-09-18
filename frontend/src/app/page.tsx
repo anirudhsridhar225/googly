@@ -57,10 +57,12 @@ export default function Home() {
           
           {appState === 'auth' && <Auth onSignupSuccess={handleSignupSuccess} />}
           {appState === 'onboarding' && <Onboarding onComplete={handleOnboardingComplete} />}
-          {/* THE FIX: Dashboard now receives the onOpenHistory prop. */}
+          {/* THE FIX: Dashboard now receives the onOpenHistory prop. */
+}
           {appState === 'dashboard' && <Dashboard onLogout={handleLogout} onOpenCamera={handleOpenCamera} onOpenHistory={handleOpenHistory} />}
           {appState === 'camera' && <CameraView onClose={handleCloseCamera} />}
-           {/* THE FIX: History now receives the correct handleCloseHistory prop. */}
+           {/* THE FIX: History now receives the correct handleCloseHistory prop. */
+}
           {appState === 'history' && <History onClose={handleCloseHistory} />}
 
         </div>
@@ -68,4 +70,3 @@ export default function Home() {
     </>
   );
 }
-
