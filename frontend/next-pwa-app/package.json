@@ -1,0 +1,23 @@
+{
+  "name": "next-pwa-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "framer-motion": "^6.0.0",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "next-pwa": "^5.5.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^2.2.0"
+  }
+}
