@@ -233,9 +233,9 @@ export default function Loader({ progress: externalProgress, forceVisible }: Loa
           })}
         </svg>
 
-        {/* Center G */}
+        {/* Center V */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="font-bold text-7xl tracking-tight select-none">G</span>
+          <span className="font-bold text-7xl tracking-tight select-none">V</span>
         </div>
 
 

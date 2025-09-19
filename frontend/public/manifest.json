@@ -1,0 +1,70 @@
+{
+  "name": "Legal Document Analyzer",
+  "short_name": "DocAnalyzer",
+  "description": "Analyze legal documents for clause severity, predatory nature, and exposure levels",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#4F46E5",
+  "background_color": "#FFFFFF",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "display_override": ["window-controls-overlay", "minimal-ui"],
+  "categories": ["business", "productivity", "utilities"],
+  "screenshots": [
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Upload Document",
+      "short_name": "Upload",
+      "description": "Upload a new legal document for analysis",
+      "url": "/upload",
+      "icons": [
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "View Documents",
+      "short_name": "Documents",
+      "description": "View previously analyzed documents",
+      "url": "/documents",
+      "icons": [
+        {
+          "src": "/android-chrome-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
+}
