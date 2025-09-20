@@ -23,7 +23,7 @@ export default function History({ onClose }: { onClose: () => void; }) {
 
     // Memoized calculation for filtering and sorting
     const filteredAndSortedItems = useMemo(() => {
-        let items = historyItems
+        const items = historyItems
             // Filter based on search term
             .filter(item => 
                 item.name.toLowerCase().includes(searchTerm.toLowerCase())

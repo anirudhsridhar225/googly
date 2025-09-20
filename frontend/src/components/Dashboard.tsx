@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
+import { useRef } from "react";
 
 // --- Icon Components for Dashboard ---
 const CameraIcon = () => (
@@ -100,6 +101,35 @@ export default function Dashboard({ onLogout, onOpenCamera, onOpenHistory }: { o
         }
     };
     
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    
+    const handleUploadClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+    
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            // Check if the file is a PDF
+            if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+                // Here you would typically send the file to your API
+                console.log('PDF file selected:', file.name);
+                // TODO: Implement API call to send the PDF file
+                // For now, we'll just show an alert
+                alert(`PDF selected: ${file.name}\n\nIn a real implementation, this would be sent to the API.`);
+            } else {
+                alert('Please select a PDF file.');
+            }
+        }
+        // Reset the file input value to allow selecting the same file again
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+    };
+    
     const cardData = [
         { title: 'Export to OCR', color: '#FF8A8A', icon: <ExportIcon /> },
         { title: 'History', color: '#A5B68D', icon: <HistoryIcon />, action: onOpenHistory },
@@ -148,6 +178,15 @@ export default function Dashboard({ onLogout, onOpenCamera, onOpenHistory }: { o
         </div>
       </motion.div>
 
+      {/* Hidden file input for PDF uploads */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        accept=".pdf,application/pdf"
+        className="hidden"
+      />
+
       <motion.footer 
         variants={itemVariants} 
         initial="hidden"
@@ -160,7 +199,11 @@ export default function Dashboard({ onLogout, onOpenCamera, onOpenHistory }: { o
                 <button onClick={onOpenCamera} className="p-4 rounded-full bg-[#4682A9] text-white hover:opacity-90 transition-opacity flex items-center justify-center">
                     <CameraIcon />
                 </button>
-                <button className="flex-grow flex items-center justify-center bg-[#4682A9] text-white py-4 px-6 rounded-full font-semibold text-lg hover:opacity-90 transition-opacity max-w-xs" style={{ fontFamily: 'Crimson Pro' }}>
+                <button 
+                  onClick={handleUploadClick}
+                  className="flex-grow flex items-center justify-center bg-[#4682A9] text-white py-4 px-6 rounded-full font-semibold text-lg hover:opacity-90 transition-opacity max-w-xs" 
+                  style={{ fontFamily: 'Crimson Pro' }}
+                >
                     <UploadIcon />
                     Upload
                 </button>
