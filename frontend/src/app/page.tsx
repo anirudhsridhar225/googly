@@ -4,11 +4,11 @@ import { useState } from 'react';
 import Auth from '../components/Auth';
 import Onboarding from '../components/Onboarding';
 import Dashboard from '../components/Dashboard';
-import CameraView from '../components/CameraView'; // 1. Import the new CameraView component
+import CameraView from '../components/CameraView';
+import History from '../components/History'; 
 
 export default function Home() {
-  // 2. Add 'camera' to the possible application states
-  const [appState, setAppState] = useState<'auth' | 'onboarding' | 'dashboard' | 'camera'>('auth');
+  const [appState, setAppState] = useState<'auth' | 'onboarding' | 'dashboard' | 'camera' | 'history'>('auth');
 
   const handleSignupSuccess = () => {
     setAppState('onboarding');
@@ -22,12 +22,20 @@ export default function Home() {
     setAppState('auth');
   }
 
-  // 3. Add handlers to open and close the camera view
   const handleOpenCamera = () => {
     setAppState('camera');
   }
   
   const handleCloseCamera = () => {
+    setAppState('dashboard');
+  }
+
+  const handleOpenHistory = () => {
+    setAppState('history');
+  }
+  
+  // THE FIX: Added a dedicated function to close the history page.
+  const handleCloseHistory = () => {
     setAppState('dashboard');
   }
 
@@ -47,11 +55,13 @@ export default function Home() {
       <main className="w-screen h-screen bg-[#FAF6D0] flex items-center justify-center sm:p-4">
         <div className="relative w-full h-full sm:max-w-sm sm:max-h-[850px] flex flex-col bg-[#FFFDF0] sm:rounded-[40px] sm:shadow-2xl overflow-hidden">
           
-          {/* 4. Update the conditional rendering logic */}
           {appState === 'auth' && <Auth onSignupSuccess={handleSignupSuccess} />}
           {appState === 'onboarding' && <Onboarding onComplete={handleOnboardingComplete} />}
-          {appState === 'dashboard' && <Dashboard onLogout={handleLogout} onOpenCamera={handleOpenCamera} />}
+          {/* THE FIX: Dashboard now receives the onOpenHistory prop. */}
+          {appState === 'dashboard' && <Dashboard onLogout={handleLogout} onOpenCamera={handleOpenCamera} onOpenHistory={handleOpenHistory} />}
           {appState === 'camera' && <CameraView onClose={handleCloseCamera} />}
+           {/* THE FIX: History now receives the correct handleCloseHistory prop. */}
+          {appState === 'history' && <History onClose={handleCloseHistory} />}
 
         </div>
       </main>

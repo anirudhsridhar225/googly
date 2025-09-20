@@ -1195,7 +1195,7 @@ const VectorGraphic = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$p
     }, void 0, true);
 _c6 = VectorGraphic;
 function Dashboard(param) {
-    let { onLogout, onOpenCamera } = param;
+    let { onLogout, onOpenCamera, onOpenHistory } = param;
     const containerVariants = {
         hidden: {
             opacity: 0
@@ -1238,7 +1238,8 @@ function Dashboard(param) {
                 fileName: "[project]/repos/googly/frontend/src/components/Dashboard.tsx",
                 lineNumber: 105,
                 columnNumber: 53
-            }, this)
+            }, this),
+            action: onOpenHistory
         },
         {
             title: 'Placeholder',
@@ -1808,6 +1809,403 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
 }),
+"[project]/repos/googly/frontend/src/components/History.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "default",
+    ()=>History
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/node_modules/framer-motion/dist/es/render/components/motion/proxy.mjs [app-client] (ecmascript)");
+;
+var _s = __turbopack_context__.k.signature();
+"use client";
+;
+;
+// --- Icon Components for History View ---
+const SearchIcon = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "20",
+        height: "20",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("circle", {
+                cx: "11",
+                cy: "11",
+                r: "8"
+            }, void 0, false, {
+                fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                lineNumber: 7,
+                columnNumber: 204
+            }, ("TURBOPACK compile-time value", void 0)),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("line", {
+                x1: "21",
+                y1: "21",
+                x2: "16.65",
+                y2: "16.65"
+            }, void 0, false, {
+                fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                lineNumber: 7,
+                columnNumber: 243
+            }, ("TURBOPACK compile-time value", void 0))
+        ]
+    }, void 0, true, {
+        fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+        lineNumber: 7,
+        columnNumber: 26
+    }, ("TURBOPACK compile-time value", void 0));
+_c = SearchIcon;
+const SortIcon = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "24",
+        height: "24",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+            d: "M3 6h18M7 12h10M10 18h4M3 6l3 3M21 6l-3 3"
+        }, void 0, false, {
+            fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+            lineNumber: 8,
+            columnNumber: 202
+        }, ("TURBOPACK compile-time value", void 0))
+    }, void 0, false, {
+        fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+        lineNumber: 8,
+        columnNumber: 24
+    }, ("TURBOPACK compile-time value", void 0));
+_c1 = SortIcon;
+function History(param) {
+    let { onClose } = param;
+    _s();
+    const [selectedId, setSelectedId] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1);
+    const [searchTerm, setSearchTerm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
+    const [sortOrder, setSortOrder] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("recent");
+    const historyItems = [
+        {
+            id: 1,
+            name: "House_agreement.pdf",
+            date: new Date("2024-09-12T10:00:00Z"),
+            tag: "Most Recent"
+        },
+        {
+            id: 2,
+            name: "Apartment_lease.pdf",
+            date: new Date("2024-09-10T15:30:00Z")
+        },
+        {
+            id: 3,
+            name: "Car_insurance.pdf",
+            date: new Date("2024-08-22T11:00:00Z")
+        },
+        {
+            id: 4,
+            name: "Business_proposal.pdf",
+            date: new Date("2024-08-15T09:00:00Z")
+        },
+        {
+            id: 5,
+            name: "Final_thesis.pdf",
+            date: new Date("2024-07-30T18:00:00Z")
+        }
+    ];
+    // Memoized calculation for filtering and sorting
+    const filteredAndSortedItems = (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
+        "History.useMemo[filteredAndSortedItems]": ()=>{
+            let items = historyItems// Filter based on search term
+            .filter({
+                "History.useMemo[filteredAndSortedItems].items": (item)=>item.name.toLowerCase().includes(searchTerm.toLowerCase())
+            }["History.useMemo[filteredAndSortedItems].items"]);
+            // Sort based on the current sort order
+            if (sortOrder === 'alpha') {
+                items.sort({
+                    "History.useMemo[filteredAndSortedItems]": (a, b)=>a.name.localeCompare(b.name)
+                }["History.useMemo[filteredAndSortedItems]"]);
+            } else {
+                // Default to sorting by most recent date
+                items.sort({
+                    "History.useMemo[filteredAndSortedItems]": (a, b)=>b.date.getTime() - a.date.getTime()
+                }["History.useMemo[filteredAndSortedItems]"]);
+            }
+            return items;
+        }
+    }["History.useMemo[filteredAndSortedItems]"], [
+        searchTerm,
+        sortOrder
+    ]);
+    const containerVariants = {
+        hidden: {
+            opacity: 0
+        },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    };
+    const itemVariants = {
+        hidden: {
+            opacity: 0,
+            x: -20
+        },
+        visible: {
+            opacity: 1,
+            x: 0,
+            transition: {
+                duration: 0.5,
+                ease: 'easeOut'
+            }
+        }
+    };
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "w-full h-full flex flex-col bg-[#FFFDF0] p-6",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].header, {
+                initial: {
+                    opacity: 0,
+                    y: -20
+                },
+                animate: {
+                    opacity: 1,
+                    y: 0
+                },
+                transition: {
+                    duration: 0.5
+                },
+                className: "flex-shrink-0 flex items-center mb-6",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                    onClick: onClose,
+                    className: "w-20 h-20 rounded-full hover:opacity-90 transition-opacity",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                        src: "/image.png",
+                        alt: "Back button",
+                        className: "w-full h-full object-contain"
+                    }, void 0, false, {
+                        fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                        lineNumber: 72,
+                        columnNumber: 21
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                    lineNumber: 68,
+                    columnNumber: 17
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                lineNumber: 62,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                variants: containerVariants,
+                initial: "hidden",
+                animate: "visible",
+                className: "flex-grow flex flex-col",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                        variants: itemVariants,
+                        className: "flex items-end justify-between mb-4",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                                className: "font-crimson italic thin text-6xl font-thin text-[#4682A9]",
+                                children: "History"
+                            }, void 0, false, {
+                                fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                lineNumber: 83,
+                                columnNumber: 21
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: ()=>setSearchTerm(""),
+                                className: "font-secondary text-xl italic text-[#4682A9] hover:text-[#3a6a8a] transition-colors",
+                                children: "Clear"
+                            }, void 0, false, {
+                                fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                lineNumber: 85,
+                                columnNumber: 21
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                        lineNumber: 82,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                        variants: itemVariants,
+                        className: "relative flex items-center mb-6",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "absolute left-4 text-[#4682A9]",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SearchIcon, {}, void 0, false, {
+                                    fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                    lineNumber: 90,
+                                    columnNumber: 25
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                lineNumber: 89,
+                                columnNumber: 21
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                type: "text",
+                                placeholder: "Search",
+                                value: searchTerm,
+                                onChange: (e)=>setSearchTerm(e.target.value),
+                                className: "w-full bg-[#EFEFEF] border-[#4682A9] rounded-full py-3 pl-12 pr-10 font-crimson-pro italic bold text-[#4682A9] focus:ring-2 focus:ring-[#4682A9]"
+                            }, void 0, false, {
+                                fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                lineNumber: 92,
+                                columnNumber: 21
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: ()=>setSortOrder((prev)=>prev === 'recent' ? 'alpha' : 'recent'),
+                                className: "absolute right-4 text-[#4682A9] hover:text-gray-800 transition-colors",
+                                title: "Sort by ".concat(sortOrder === 'recent' ? 'Alphabetical' : 'Most Recent'),
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SortIcon, {}, void 0, false, {
+                                    fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                    lineNumber: 104,
+                                    columnNumber: 25
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                lineNumber: 99,
+                                columnNumber: 21
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                        lineNumber: 88,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex-grow overflow-y-auto pr-2 space-y-3",
+                        children: filteredAndSortedItems.map((item)=>{
+                            const isSelected = item.id === selectedId;
+                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+                                layout: true,
+                                variants: itemVariants,
+                                onClick: ()=>setSelectedId(item.id),
+                                className: "p-4 rounded-2xl cursor-pointer transition-colors duration-300 ".concat(isSelected ? 'bg-[#4682A9] text-white' : 'bg-[#91C8E4]/50 text-gray-700'),
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "flex items-center justify-between",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "font-secondary text-xs opacity-80 mb-1",
+                                                        children: "File Name"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                                        lineNumber: 121,
+                                                        columnNumber: 41
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "font-primary-crimson font-thin text-xl ".concat(isSelected ? 'text-white' : 'text-[#40404099]'),
+                                                        children: item.name
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                                        lineNumber: 122,
+                                                        columnNumber: 41
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                                lineNumber: 120,
+                                                columnNumber: 37
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                className: "font-secondary-crimson pro font-thin py-2 px-6 rounded-full transition-colors duration-300 ".concat(isSelected ? 'bg-white text-[#4682A9]' : 'bg-[#4682A9] text-white'),
+                                                children: "View"
+                                            }, void 0, false, {
+                                                fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                                lineNumber: 124,
+                                                columnNumber: 37
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                        lineNumber: 119,
+                                        columnNumber: 33
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "mt-2 flex items-center justify-between text-xs opacity-80",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                children: "Date Scanned"
+                                            }, void 0, false, {
+                                                fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                                lineNumber: 129,
+                                                columnNumber: 37
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                children: [
+                                                    item.date.toLocaleDateString(),
+                                                    " ",
+                                                    item.tag && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "font-bold ml-1",
+                                                        children: "(".concat(item.tag, ")")
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                                        lineNumber: 130,
+                                                        columnNumber: 86
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                                lineNumber: 130,
+                                                columnNumber: 37
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                        lineNumber: 128,
+                                        columnNumber: 33
+                                    }, this)
+                                ]
+                            }, item.id, true, {
+                                fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                                lineNumber: 112,
+                                columnNumber: 29
+                            }, this);
+                        })
+                    }, void 0, false, {
+                        fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                        lineNumber: 108,
+                        columnNumber: 17
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+                lineNumber: 76,
+                columnNumber: 13
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "[project]/repos/googly/frontend/src/components/History.tsx",
+        lineNumber: 61,
+        columnNumber: 9
+    }, this);
+}
+_s(History, "Q3sCQibcC8LqpCcFcujXYyXkA34=");
+_c2 = History;
+var _c, _c1, _c2;
+__turbopack_context__.k.register(_c, "SearchIcon");
+__turbopack_context__.k.register(_c1, "SortIcon");
+__turbopack_context__.k.register(_c2, "History");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
 "[project]/repos/googly/frontend/src/app/page.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
@@ -1821,7 +2219,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$
 var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$Auth$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/src/components/Auth.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$Onboarding$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/src/components/Onboarding.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$Dashboard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/src/components/Dashboard.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$CameraView$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/src/components/CameraView.tsx [app-client] (ecmascript)"); // 1. Import the new CameraView component
+var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$CameraView$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/src/components/CameraView.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$History$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/src/components/History.tsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
@@ -1831,9 +2230,9 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
 function Home() {
     _s();
-    // 2. Add 'camera' to the possible application states
     const [appState, setAppState] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('auth');
     const handleSignupSuccess = ()=>{
         setAppState('onboarding');
@@ -1844,7 +2243,6 @@ function Home() {
     const handleLogout = ()=>{
         setAppState('auth');
     };
-    // 3. Add handlers to open and close the camera view
     const handleOpenCamera = ()=>{
         setAppState('camera');
     };
@@ -1853,6 +2251,10 @@ function Home() {
     };
     const handleOpenHistory = ()=>{
         setAppState('history');
+    };
+    // THE FIX: Added a dedicated function to close the history page.
+    const handleCloseHistory = ()=>{
+        setAppState('dashboard');
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
@@ -1869,40 +2271,48 @@ function Home() {
                             onSignupSuccess: handleSignupSuccess
                         }, void 0, false, {
                             fileName: "[project]/repos/googly/frontend/src/app/page.tsx",
-                            lineNumber: 55,
+                            lineNumber: 58,
                             columnNumber: 35
                         }, this),
                         appState === 'onboarding' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$Onboarding$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                             onComplete: handleOnboardingComplete
                         }, void 0, false, {
                             fileName: "[project]/repos/googly/frontend/src/app/page.tsx",
-                            lineNumber: 56,
+                            lineNumber: 59,
                             columnNumber: 41
                         }, this),
                         appState === 'dashboard' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$Dashboard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                             onLogout: handleLogout,
-                            onOpenCamera: handleOpenCamera
+                            onOpenCamera: handleOpenCamera,
+                            onOpenHistory: handleOpenHistory
                         }, void 0, false, {
                             fileName: "[project]/repos/googly/frontend/src/app/page.tsx",
-                            lineNumber: 57,
+                            lineNumber: 61,
                             columnNumber: 40
                         }, this),
                         appState === 'camera' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$CameraView$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                             onClose: handleCloseCamera
                         }, void 0, false, {
                             fileName: "[project]/repos/googly/frontend/src/app/page.tsx",
-                            lineNumber: 58,
+                            lineNumber: 62,
                             columnNumber: 37
+                        }, this),
+                        appState === 'history' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$History$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                            onClose: handleCloseHistory
+                        }, void 0, false, {
+                            fileName: "[project]/repos/googly/frontend/src/app/page.tsx",
+                            lineNumber: 64,
+                            columnNumber: 38
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/repos/googly/frontend/src/app/page.tsx",
-                    lineNumber: 52,
+                    lineNumber: 56,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/repos/googly/frontend/src/app/page.tsx",
-                lineNumber: 51,
+                lineNumber: 55,
                 columnNumber: 7
             }, this)
         ]
@@ -1918,4 +2328,4 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 }),
 ]);
 
-//# sourceMappingURL=repos_googly_frontend_src_850e2605._.js.map
+//# sourceMappingURL=repos_googly_frontend_src_1a27818a._.js.map

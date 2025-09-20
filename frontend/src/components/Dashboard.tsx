@@ -81,8 +81,8 @@ const VectorGraphic = () => (
     </>
 );
 
-// The component now correctly accepts 'onLogout' and 'onOpenCamera' props.
-export default function Dashboard({ onLogout, onOpenCamera }: { onLogout: () => void; onOpenCamera: () => void; }) {
+// THE FIX: The component now accepts an 'onOpenCamera' prop.
+export default function Dashboard({ onLogout, onOpenCamera, onOpenHistory }: { onLogout: () => void; onOpenCamera: () => void; onOpenHistory: () => void; }) {
     
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
@@ -102,7 +102,7 @@ export default function Dashboard({ onLogout, onOpenCamera }: { onLogout: () => 
     
     const cardData = [
         { title: 'Export to OCR', color: '#FF8A8A', icon: <ExportIcon /> },
-        { title: 'History', color: '#A5B68D', icon: <HistoryIcon /> },
+        { title: 'History', color: '#A5B68D', icon: <HistoryIcon />, action: onOpenHistory },
         { title: 'Placeholder', color: '#FCDC94', icon: <PlaceholderIcon /> },
         { title: 'Profile', color: '#AD88C6', icon: <ProfileIcon />, action: onLogout },
     ];
