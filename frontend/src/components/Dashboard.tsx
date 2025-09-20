@@ -18,20 +18,68 @@ const UploadIcon = () => (
     </svg>
 );
 
-// --- Butterfly Vector Graphic ---
-const ButterflyVector = () => (
-    <svg width="250" height="150" viewBox="0 0 328 178" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute top-0 right-0 transform translate-x-8 -translate-y-4 opacity-90">
-        <defs>
-            <linearGradient id="butterfly-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#A5B68D" />
-                <stop offset="50%" stopColor="#FCDC94" />
-                <stop offset="100%" stopColor="#FF8A8A" />
-            </linearGradient>
-        </defs>
-        <path d="M208.281 1.74838C209.613 3.32833 210 5.48805 210 7.74954V7.74954C210 10.011 209.613 12.1708 208.281 13.7507L132.551 104.755C131.22 106.335 129.289 107.25 127.273 107.25V107.25C125.257 107.25 123.327 106.335 121.995 104.755L1.71941 1.74838C0.387431 0.168432 -2.1318e-05 -1.99129 -2.1318e-05 -4.25278V-4.25278C-2.1318e-05 -6.51427 0.387431 -8.67399 1.71941 -10.2539L121.995 -113.259C123.327 -114.839 125.257 -115.753 127.273 -115.753V-115.753C129.289 -115.753 131.22 -114.839 132.551 -113.259L208.281 1.74838Z" transform="matrix(0.89, -0.45, -0.45, -0.89, 210, 80)" stroke="url(#butterfly-gradient)" strokeWidth="10" />
+// --- Card Icons ---
+const ExportIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14,2 14,8 20,8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
     </svg>
 );
 
+const HistoryIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12,6 12,12 16,14"></polyline>
+    </svg>
+);
+
+const PlaceholderIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+        <polyline points="21,15 16,10 5,21"></polyline>
+    </svg>
+);
+
+const ProfileIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+    </svg>
+);
+
+// --- Vector Graphic (PNG with SVG fallback) ---
+const VectorGraphic = () => (
+    <>
+        {/* PNG Vector - correct filename */}
+        <img 
+            src="/Vector.png" 
+            alt="Decorative vector" 
+            className="absolute -top-8 -right-8 w-96 h-64 object-contain opacity-90"
+            onError={(e) => {
+                // Hide broken image if PNG fails to load
+                (e.target as HTMLImageElement).style.display = 'none';
+            }}
+        />
+        
+        {/* SVG Fallback - similar to your reference image */}
+        <svg 
+            width="300" 
+            height="200" 
+            viewBox="0 0 300 200" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg" 
+            className="absolute -top-8 -right-8 opacity-80"
+        >
+           
+           
+            {/* Central glow */}
+            
+        </svg>
+    </>
+);
 
 // The component now correctly accepts an 'onLogout' prop.
 export default function Dashboard({ onLogout }: { onLogout: () => void }) {
@@ -53,56 +101,70 @@ export default function Dashboard({ onLogout }: { onLogout: () => void }) {
     };
     
     const cardData = [
-        { title: 'Export to OCR', color: '#FF8A8A' },
-        { title: 'History', color: '#A5B68D' },
-        { title: 'Placeholder', color: '#FCDC94' },
-        { title: 'Profile', color: '#AD88C6', action: onLogout }, // Logout action added here
+        { title: 'Export to OCR', color: '#FF8A8A', icon: <ExportIcon /> },
+        { title: 'History', color: '#A5B68D', icon: <HistoryIcon /> },
+        { title: 'Placeholder', color: '#FCDC94', icon: <PlaceholderIcon /> },
+        { title: 'Profile', color: '#AD88C6', icon: <ProfileIcon />, action: onLogout },
     ];
 
   return (
-    <motion.div
-      className="w-full h-full flex flex-col bg-[#91C8E4] p-6 overflow-hidden"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      <header className="relative flex-shrink-0 z-10">
-        <ButterflyVector />
-        <motion.p variants={itemVariants} className="font-secondary text-2xl font-extralight tracking-[0.4px]" style={{ lineHeight: '100%' }}>ask</motion.p>
-        <motion.h1 variants={itemVariants} className="font-primary text-8xl font-bold -mt-2">Vero</motion.h1>
-      </header>
+    <div className="w-full h-screen bg-[#91C8E4] flex flex-col">
+      <motion.div
+        className="flex-1 flex flex-col justify-between p-6"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Vector at the top */}
+        <div className="relative h-20 overflow-visible">
+          <VectorGraphic />
+        </div>
 
-      <motion.p variants={itemVariants} className="font-primary text-white text-6xl font-semibold mt-6 leading-tight tracking-tighter" style={{letterSpacing: '-2px', lineHeight: '90%'}}>
-        Cluttered docs, <br />
-        clear answers.
-      </motion.p>
+        {/* Main content section */}
+        <div className="flex-1 flex flex-col justify-center">
+          {/* Ask text positioned left, avoiding vector */}
+          <motion.p variants={itemVariants} className="text-2xl font-extralight tracking-[0.4px] mb-1" style={{ fontFamily: 'Crimson Pro', lineHeight: '100%' }}>ask</motion.p>
+          
+          {/* Vero title */}
+          <motion.h1 variants={itemVariants} className="text-8xl font-thin -mt-2 mb-6  relative z-20" style={{ fontFamily: 'Crimson Text' }}>Vero</motion.h1>
 
-      <motion.div variants={itemVariants} className="grid grid-cols-2 gap-5 mt-8">
-        {cardData.map((card) => (
-            <button key={card.title} onClick={card.action} className="rounded-2xl p-4 h-36 flex flex-col justify-between text-left" style={{backgroundColor: card.color}}>
-                <div className="w-12 h-12 bg-white/80 rounded-full"></div>
-                <p className="font-secondary text-white font-semibold">{card.title}</p>
-            </button>
-        ))}
+          {/* White tagline text */}
+          <motion.p variants={itemVariants} className="text-white text-5xl font-semibold mb-8 leading-tight tracking-tighter" style={{fontFamily: 'Crimson Text', letterSpacing: '-2px', lineHeight: '85%'}}>
+            Cluttered docs, <br />
+            clear answers.
+          </motion.p>
+
+          {/* Cards grid */}
+          <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4">
+            {cardData.map((card) => (
+                <button key={card.title} onClick={card.action} className="rounded-2xl p-6 h-40 flex flex-col items-center justify-center text-center" style={{backgroundColor: card.color}}>
+                    <div className="w-14 h-14 bg-white/90 rounded-full flex items-center justify-center text-gray-700 mb-3">
+                        {card.icon}
+                    </div>
+                    <p className="text-gray-800 font-semibold text-base" style={{ fontFamily: 'Crimson Pro' }}>{card.title}</p>
+                </button>
+            ))}
+          </motion.div>
+        </div>
       </motion.div>
-      
-      <div className="flex-grow"></div>
 
-      <motion.footer variants={itemVariants} className="flex-shrink-0 w-full">
-            <div className="bg-[#FFFDF0] p-4 rounded-2xl shadow-lg text-center">
-                <p className="font-secondary text-sm text-gray-600 mb-3">Start analyzing the document</p>
-                <div className="flex items-center justify-center space-x-3">
-                    <button className="p-4 rounded-full bg-gray-200 text-[#4682A9] hover:bg-gray-300 transition-colors">
-                        <CameraIcon />
-                    </button>
-                    <button className="flex-grow flex items-center justify-center bg-[#4682A9] text-white py-4 px-6 rounded-full font-secondary font-semibold text-lg hover:opacity-90 transition-opacity">
-                        <UploadIcon />
-                        Upload
-                    </button>
-                </div>
+      <motion.footer 
+        variants={itemVariants} 
+        initial="hidden"
+        animate="visible"
+        className="bg-[#FFFDF0] p-6"
+      >
+            <p className="text-sm text-center text-gray-600 mb-4" style={{ fontFamily: 'Crimson Pro' }}>Start analyzing the document</p>
+            <div className="flex items-center justify-center space-x-4">
+                <button className="p-4 rounded-full bg-[#4682A9] text-white hover:opacity-90 transition-opacity flex items-center justify-center">
+                    <CameraIcon />
+                </button>
+                <button className="flex-grow flex items-center justify-center bg-[#4682A9] text-white py-4 px-6 rounded-full font-semibold text-lg hover:opacity-90 transition-opacity max-w-xs" style={{ fontFamily: 'Crimson Pro' }}>
+                    <UploadIcon />
+                    Upload
+                </button>
             </div>
       </motion.footer>
-    </motion.div>
+    </div>
   );
 }
-
