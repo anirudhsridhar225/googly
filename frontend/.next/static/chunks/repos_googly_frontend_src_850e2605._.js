@@ -1195,7 +1195,7 @@ const VectorGraphic = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$p
     }, void 0, true);
 _c6 = VectorGraphic;
 function Dashboard(param) {
-    let { onLogout } = param;
+    let { onLogout, onOpenCamera } = param;
     const containerVariants = {
         hidden: {
             opacity: 0
@@ -1299,7 +1299,7 @@ function Dashboard(param) {
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].h1, {
                                 variants: itemVariants,
-                                className: "text-8xl font-thin -mt-2 mb-6  relative z-20",
+                                className: "text-8xl font-thin -mt-2 mb-6  relative z-20",
                                 style: {
                                     fontFamily: 'Crimson Text'
                                 },
@@ -1404,15 +1404,16 @@ function Dashboard(param) {
                         className: "flex items-center justify-center space-x-4",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: onOpenCamera,
                                 className: "p-4 rounded-full bg-[#4682A9] text-white hover:opacity-90 transition-opacity flex items-center justify-center",
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(CameraIcon, {}, void 0, false, {
                                     fileName: "[project]/repos/googly/frontend/src/components/Dashboard.tsx",
-                                    lineNumber: 160,
+                                    lineNumber: 161,
                                     columnNumber: 21
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/repos/googly/frontend/src/components/Dashboard.tsx",
-                                lineNumber: 159,
+                                lineNumber: 160,
                                 columnNumber: 17
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1423,14 +1424,14 @@ function Dashboard(param) {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(UploadIcon, {}, void 0, false, {
                                         fileName: "[project]/repos/googly/frontend/src/components/Dashboard.tsx",
-                                        lineNumber: 163,
+                                        lineNumber: 164,
                                         columnNumber: 21
                                     }, this),
                                     "Upload"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/repos/googly/frontend/src/components/Dashboard.tsx",
-                                lineNumber: 162,
+                                lineNumber: 163,
                                 columnNumber: 17
                             }, this)
                         ]
@@ -1466,6 +1467,347 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
 }),
+"[project]/repos/googly/frontend/src/components/CameraView.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "default",
+    ()=>CameraView
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/node_modules/framer-motion/dist/es/render/components/motion/proxy.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+;
+var _s = __turbopack_context__.k.signature();
+"use client";
+;
+;
+// --- Icon Components for Camera View ---
+const FolderIcon = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "28",
+        height: "28",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+            d: "M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"
+        }, void 0, false, {
+            fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+            lineNumber: 7,
+            columnNumber: 204
+        }, ("TURBOPACK compile-time value", void 0))
+    }, void 0, false, {
+        fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+        lineNumber: 7,
+        columnNumber: 26
+    }, ("TURBOPACK compile-time value", void 0));
+_c = FolderIcon;
+const CameraCaptureIcon = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "32",
+        height: "32",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                d: "M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+            }, void 0, false, {
+                fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                lineNumber: 8,
+                columnNumber: 211
+            }, ("TURBOPACK compile-time value", void 0)),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("circle", {
+                cx: "12",
+                cy: "13",
+                r: "4"
+            }, void 0, false, {
+                fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                lineNumber: 8,
+                columnNumber: 310
+            }, ("TURBOPACK compile-time value", void 0))
+        ]
+    }, void 0, true, {
+        fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+        lineNumber: 8,
+        columnNumber: 33
+    }, ("TURBOPACK compile-time value", void 0));
+_c1 = CameraCaptureIcon;
+const CheckIcon = ()=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "28",
+        height: "28",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2.5",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("polyline", {
+            points: "20 6 9 17 4 12"
+        }, void 0, false, {
+            fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+            lineNumber: 9,
+            columnNumber: 205
+        }, ("TURBOPACK compile-time value", void 0))
+    }, void 0, false, {
+        fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+        lineNumber: 9,
+        columnNumber: 25
+    }, ("TURBOPACK compile-time value", void 0));
+_c2 = CheckIcon;
+// --- REFINED Background Component ---
+const Stripe = (param)=>{
+    let { d, color, delay, width } = param;
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].path, {
+        d: d,
+        stroke: color,
+        strokeWidth: width,
+        fill: "none",
+        strokeLinecap: "round",
+        initial: {
+            pathLength: 0,
+            opacity: 0
+        },
+        animate: {
+            pathLength: 1,
+            opacity: 1
+        },
+        transition: {
+            pathLength: {
+                duration: 2.8,
+                ease: "circOut",
+                delay
+            },
+            opacity: {
+                duration: 2,
+                ease: "linear",
+                delay
+            }
+        }
+    }, void 0, false, {
+        fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+        lineNumber: 13,
+        columnNumber: 3
+    }, ("TURBOPACK compile-time value", void 0));
+};
+_c3 = Stripe;
+const Background = ()=>{
+    // New refined paths that start from a line off-screen and have more inclined curves.
+    const strokes = [
+        {
+            d: "M 0 900 C 0 650, -20 400, -50 300",
+            color: "#A5B68D",
+            delay: 0.0,
+            width: 55
+        },
+        {
+            d: "M 133 900 C 133 600, 100 200, 100 -50",
+            color: "#AD88C6",
+            delay: 0.2,
+            width: 55
+        },
+        {
+            d: "M 266 900 C 266 600, 300 200, 300 -50",
+            color: "#FCDC94",
+            delay: 0.4,
+            width: 55
+        },
+        {
+            d: "M 400 900 C 400 650, 420 400, 450 300",
+            color: "#FF8A8A",
+            delay: 0.6,
+            width: 55
+        }
+    ];
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+        viewBox: "-50 -50 500 950",
+        preserveAspectRatio: "xMidYMid slice",
+        className: "absolute inset-0 w-full h-full",
+        children: strokes.map((stroke, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Stripe, {
+                ...stroke
+            }, index, false, {
+                fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                lineNumber: 44,
+                columnNumber: 17
+            }, ("TURBOPACK compile-time value", void 0)))
+    }, void 0, false, {
+        fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+        lineNumber: 38,
+        columnNumber: 9
+    }, ("TURBOPACK compile-time value", void 0));
+};
+_c4 = Background;
+function CameraView(param) {
+    let { onClose } = param;
+    _s();
+    const videoRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const [stream, setStream] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "CameraView.useEffect": ()=>{
+            let mediaStream;
+            const enableCamera = {
+                "CameraView.useEffect.enableCamera": async ()=>{
+                    try {
+                        // Request access to the user's camera
+                        mediaStream = await navigator.mediaDevices.getUserMedia({
+                            video: {
+                                facingMode: "environment"
+                            } // Prefer the rear camera
+                        });
+                        setStream(mediaStream);
+                        if (videoRef.current) {
+                            videoRef.current.srcObject = mediaStream;
+                        }
+                    } catch (err) {
+                        console.error("Error accessing camera:", err);
+                        setError("Could not access camera. Please check permissions.");
+                    }
+                }
+            }["CameraView.useEffect.enableCamera"];
+            enableCamera();
+            // Cleanup function to stop the camera stream when the component unmounts
+            return ({
+                "CameraView.useEffect": ()=>{
+                    if (mediaStream) {
+                        mediaStream.getTracks().forEach({
+                            "CameraView.useEffect": (track)=>track.stop()
+                        }["CameraView.useEffect"]);
+                    }
+                }
+            })["CameraView.useEffect"];
+        }
+    }["CameraView.useEffect"], []);
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "w-full h-full flex flex-col bg-[#FFFDF0] relative overflow-hidden",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "absolute inset-0 z-0",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Background, {}, void 0, false, {
+                    fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                    lineNumber: 88,
+                    columnNumber: 17
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                lineNumber: 87,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "relative flex-grow flex items-center justify-center p-8 z-10",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "w-full h-full bg-black rounded-3xl flex items-center justify-center overflow-hidden",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("video", {
+                            ref: videoRef,
+                            autoPlay: true,
+                            playsInline: true,
+                            className: "w-full h-full object-cover"
+                        }, void 0, false, {
+                            fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                            lineNumber: 94,
+                            columnNumber: 21
+                        }, this),
+                        error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "absolute inset-0 flex items-center justify-center p-4",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: "font-secondary text-lg text-red-500 text-center",
+                                children: error
+                            }, void 0, false, {
+                                fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                                lineNumber: 103,
+                                columnNumber: 29
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                            lineNumber: 102,
+                            columnNumber: 26
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                    lineNumber: 92,
+                    columnNumber: 17
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                lineNumber: 91,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
+                className: "relative flex-shrink-0 w-full flex items-center justify-evenly p-6 z-10",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        className: "p-4 rounded-full bg-[#4682A9]/20 text-[#4682A9] hover:bg-[#4682A9]/30 transition-colors",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(FolderIcon, {}, void 0, false, {
+                            fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                            lineNumber: 111,
+                            columnNumber: 21
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                        lineNumber: 110,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        className: "p-5 rounded-full bg-[#4682A9] text-white shadow-lg hover:opacity-90 transition-opacity",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(CameraCaptureIcon, {}, void 0, false, {
+                            fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                            lineNumber: 114,
+                            columnNumber: 21
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                        lineNumber: 113,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: onClose,
+                        className: "p-4 rounded-full bg-[#4682A9]/20 text-[#4682A9] hover:bg-[#4682A9]/30 transition-colors",
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(CheckIcon, {}, void 0, false, {
+                            fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                            lineNumber: 117,
+                            columnNumber: 21
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                        lineNumber: 116,
+                        columnNumber: 17
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+                lineNumber: 109,
+                columnNumber: 13
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "[project]/repos/googly/frontend/src/components/CameraView.tsx",
+        lineNumber: 86,
+        columnNumber: 9
+    }, this);
+}
+_s(CameraView, "FaEicAmXy/KgMfbR4HyCK8Ksndc=");
+_c5 = CameraView;
+var _c, _c1, _c2, _c3, _c4, _c5;
+__turbopack_context__.k.register(_c, "FolderIcon");
+__turbopack_context__.k.register(_c1, "CameraCaptureIcon");
+__turbopack_context__.k.register(_c2, "CheckIcon");
+__turbopack_context__.k.register(_c3, "Stripe");
+__turbopack_context__.k.register(_c4, "Background");
+__turbopack_context__.k.register(_c5, "CameraView");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
 "[project]/repos/googly/frontend/src/app/page.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
@@ -1479,6 +1821,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$
 var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$Auth$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/src/components/Auth.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$Onboarding$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/src/components/Onboarding.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$Dashboard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/src/components/Dashboard.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$CameraView$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/repos/googly/frontend/src/components/CameraView.tsx [app-client] (ecmascript)"); // 1. Import the new CameraView component
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
@@ -1487,20 +1830,26 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
 function Home() {
     _s();
-    // This state now controls the entire application flow.
+    // 2. Add 'camera' to the possible application states
     const [appState, setAppState] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('auth');
     const handleSignupSuccess = ()=>{
         setAppState('onboarding');
     };
     const handleOnboardingComplete = ()=>{
-        // After onboarding, the user proceeds to the main dashboard.
         setAppState('dashboard');
     };
-    // A function to go back to the auth screen (for demonstration)
     const handleLogout = ()=>{
         setAppState('auth');
+    };
+    // 3. Add handlers to open and close the camera view
+    const handleOpenCamera = ()=>{
+        setAppState('camera');
+    };
+    const handleCloseCamera = ()=>{
+        setAppState('dashboard');
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
@@ -1517,32 +1866,40 @@ function Home() {
                             onSignupSuccess: handleSignupSuccess
                         }, void 0, false, {
                             fileName: "[project]/repos/googly/frontend/src/app/page.tsx",
-                            lineNumber: 43,
+                            lineNumber: 51,
                             columnNumber: 35
                         }, this),
                         appState === 'onboarding' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$Onboarding$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                             onComplete: handleOnboardingComplete
                         }, void 0, false, {
                             fileName: "[project]/repos/googly/frontend/src/app/page.tsx",
-                            lineNumber: 44,
+                            lineNumber: 52,
                             columnNumber: 41
                         }, this),
                         appState === 'dashboard' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$Dashboard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                            onLogout: handleLogout
+                            onLogout: handleLogout,
+                            onOpenCamera: handleOpenCamera
                         }, void 0, false, {
                             fileName: "[project]/repos/googly/frontend/src/app/page.tsx",
-                            lineNumber: 46,
+                            lineNumber: 53,
                             columnNumber: 40
+                        }, this),
+                        appState === 'camera' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$src$2f$components$2f$CameraView$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                            onClose: handleCloseCamera
+                        }, void 0, false, {
+                            fileName: "[project]/repos/googly/frontend/src/app/page.tsx",
+                            lineNumber: 54,
+                            columnNumber: 37
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/repos/googly/frontend/src/app/page.tsx",
-                    lineNumber: 40,
+                    lineNumber: 48,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/repos/googly/frontend/src/app/page.tsx",
-                lineNumber: 39,
+                lineNumber: 47,
                 columnNumber: 7
             }, this)
         ]
@@ -1558,4 +1915,4 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 }),
 ]);
 
-//# sourceMappingURL=repos_googly_frontend_src_05cb52e9._.js.map
+//# sourceMappingURL=repos_googly_frontend_src_850e2605._.js.map

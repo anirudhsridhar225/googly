@@ -73,16 +73,16 @@ const VectorGraphic = () => (
             xmlns="http://www.w3.org/2000/svg" 
             className="absolute -top-8 -right-8 opacity-80"
         >
-           
-           
+            
+            
             {/* Central glow */}
             
         </svg>
     </>
 );
 
-// The component now correctly accepts an 'onLogout' prop.
-export default function Dashboard({ onLogout }: { onLogout: () => void }) {
+// The component now correctly accepts 'onLogout' and 'onOpenCamera' props.
+export default function Dashboard({ onLogout, onOpenCamera }: { onLogout: () => void; onOpenCamera: () => void; }) {
     
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
@@ -126,7 +126,7 @@ export default function Dashboard({ onLogout }: { onLogout: () => void }) {
           <motion.p variants={itemVariants} className="text-2xl font-extralight tracking-[0.4px] mb-1" style={{ fontFamily: 'Crimson Pro', lineHeight: '100%' }}>ask</motion.p>
           
           {/* Vero title */}
-          <motion.h1 variants={itemVariants} className="text-8xl font-thin -mt-2 mb-6  relative z-20" style={{ fontFamily: 'Crimson Text' }}>Vero</motion.h1>
+          <motion.h1 variants={itemVariants} className="text-8xl font-thin -mt-2 mb-6  relative z-20" style={{ fontFamily: 'Crimson Text' }}>Vero</motion.h1>
 
           {/* White tagline text */}
           <motion.p variants={itemVariants} className="text-white text-5xl font-semibold mb-8 leading-tight tracking-tighter" style={{fontFamily: 'Crimson Text', letterSpacing: '-2px', lineHeight: '85%'}}>
@@ -141,7 +141,7 @@ export default function Dashboard({ onLogout }: { onLogout: () => void }) {
                     <div className="w-14 h-14 bg-white/90 rounded-full flex items-center justify-center text-gray-700 mb-3">
                         {card.icon}
                     </div>
-                    <p className="text-gray-800 font-semibold text-base" style={{ fontFamily: 'Crimson Pro' }}>{card.title}</p>
+                    <p className="text-gray-800 font-thin text-base" style={{ fontFamily: 'Crimson Pro' }}>{card.title}</p>
                 </button>
             ))}
           </motion.div>
@@ -156,7 +156,8 @@ export default function Dashboard({ onLogout }: { onLogout: () => void }) {
       >
             <p className="text-sm text-center text-gray-600 mb-4" style={{ fontFamily: 'Crimson Pro' }}>Start analyzing the document</p>
             <div className="flex items-center justify-center space-x-4">
-                <button className="p-4 rounded-full bg-[#4682A9] text-white hover:opacity-90 transition-opacity flex items-center justify-center">
+                {/* THE FIX: The camera button now triggers the onOpenCamera function */}
+                <button onClick={onOpenCamera} className="p-4 rounded-full bg-[#4682A9] text-white hover:opacity-90 transition-opacity flex items-center justify-center">
                     <CameraIcon />
                 </button>
                 <button className="flex-grow flex items-center justify-center bg-[#4682A9] text-white py-4 px-6 rounded-full font-semibold text-lg hover:opacity-90 transition-opacity max-w-xs" style={{ fontFamily: 'Crimson Pro' }}>
@@ -168,3 +169,4 @@ export default function Dashboard({ onLogout }: { onLogout: () => void }) {
     </div>
   );
 }
+
