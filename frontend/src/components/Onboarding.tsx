@@ -2,6 +2,7 @@
 
 import { motion, Variants } from "framer-motion";
 
+// THE FIX: This component now accepts an 'onComplete' prop.
 export default function Onboarding({ onComplete }: { onComplete: () => void; }) {
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -30,7 +31,6 @@ export default function Onboarding({ onComplete }: { onComplete: () => void; }) 
         className="w-full max-w-sm"
         variants={itemVariants}
       >
-        {/* Angular Gradient Border */}
         <div className="p-1.5 rounded-[30px]" style={{ backgroundImage: 'conic-gradient(from 180deg at 50% 50%, #A5B68D 0deg, #AD88C6 90deg, #FCDC94 180deg, #FF8A8A 270deg, #A5B68D 360deg)' }}>
           <div className="bg-[#FFFDF0] w-full h-[550px] rounded-[24px] flex items-center justify-center">
             <span className="font-secondary text-2xl text-gray-400">

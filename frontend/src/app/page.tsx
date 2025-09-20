@@ -3,28 +3,30 @@
 import { useState } from 'react';
 import Auth from '../components/Auth';
 import Onboarding from '../components/Onboarding';
+import Dashboard from '../components/Dashboard';
 
 export default function Home() {
-  // This state will control which main component is visible.
-  // 'auth' for the login/signup flow, 'onboarding' for the new user tutorial.
-  const [appState, setAppState] = useState<'auth' | 'onboarding'>('auth');
+  // This state now controls the entire application flow.
+  const [appState, setAppState] = useState<'auth' | 'onboarding' | 'dashboard'>('auth');
 
-  // These functions will be passed to the child components to change the app state.
   const handleSignupSuccess = () => {
-    // When a new user signs up in the Auth component, we switch to the onboarding view.
     setAppState('onboarding');
   };
 
   const handleOnboardingComplete = () => {
-    // When the user finishes the tutorial, we can navigate them to the main app.
-    // For now, we'll go back to the auth screen to demonstrate the flow.
-    setAppState('auth'); 
+    // After onboarding, the user proceeds to the main dashboard.
+    setAppState('dashboard'); 
   };
+  
+  // A function to go back to the auth screen (for demonstration)
+  const handleLogout = () => {
+    setAppState('auth');
+  }
 
   return (
     <>
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,700;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200;0,400;0,600;0,700&family=Crimson+Text:ital,wght@0,400;0,600;0,700&display=swap');
         
         .font-primary {
             font-family: 'Crimson Text', serif;
@@ -39,7 +41,9 @@ export default function Home() {
           
           {/* Conditional rendering based on the app state */}
           {appState === 'auth' && <Auth onSignupSuccess={handleSignupSuccess} />}
-          {appState === 'onboarding' && <Onboarding onComplete={handleOnboardingComplete} />}
+          {appState === 'onboarding' && <Onboarding onComplete={handleOnboardingComplete} />} 
+          {/* THE FIX: The correct 'onLogout' prop is now passed to the Dashboard */}
+          {appState === 'dashboard' && <Dashboard onLogout={handleLogout} />}
 
         </div>
       </main>
