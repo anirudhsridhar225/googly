@@ -1,10 +1,11 @@
 {
   "name": "Googly",
   "short_name": "Googly",
+  "description": "Proofread. Analyze. Simplified.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#89cff0",
+  "background_color": "#FEF9E7",
+  "theme_color": "#B0D9F6",
   "icons": [
     {
       "src": "/icon-192.png",

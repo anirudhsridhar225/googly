@@ -10,6 +10,7 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: 'Googly',
   description: 'Proofread. Analyze. Simplified.',
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
