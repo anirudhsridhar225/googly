@@ -16,7 +16,7 @@ from models.legal_models import (
     SeverityLevel, RoutingDecision, FIRESTORE_COLLECTIONS
 )
 from services.context_retriever import ContextRetriever
-from gemini_classifier import GeminiClassifier, ClassificationResponse
+from .gemini_classifier import GeminiClassifier, ClassificationResponse
 from storage.bucket_store import BucketStore
 from storage.document_store import DocumentStore
 from storage.firestore_client import get_firestore_client

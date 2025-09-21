@@ -38,7 +38,6 @@ from services.response_formatter import (
     ResponseFormatter, StandardResponse, ClassificationResponseData,
     BatchResponseData, ErrorCode, ErrorDetail, StatusCodeMapper
 )
-)
 
 logger = logging.getLogger(__name__)
 
@@ -863,7 +862,7 @@ async def analyze_document(
         file_content = await file.read()
         
         # Use existing OCR system from utils
-        from utils import extract_text_auto
+        from processing.utils import extract_text_auto
         raw_text = extract_text_auto(
             file_bytes=file_content,
             content_type=file.content_type,

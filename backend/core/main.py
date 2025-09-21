@@ -123,7 +123,7 @@ app.add_middleware(PerformanceMonitoringMiddleware, slow_request_threshold=5.0)
 app.add_middleware(ErrorMonitoringMiddleware)
 app.add_middleware(RequestTrackingMiddleware)
 
-app.include_router(text_ocr.router, prefix="/api/ocr", tags=["ocr"])
+app.include_router(text_ocr, prefix="/api/ocr", tags=["ocr"])
 app.include_router(user.router, prefix="/api/user", tags=["user"])
 app.include_router(classification.router, prefix="/api/classification", tags=["classification"])
 app.include_router(reference_documents.router, prefix="/api/reference", tags=["reference-documents"])

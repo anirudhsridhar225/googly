@@ -4,7 +4,7 @@ import requests
 from fastapi import APIRouter, File, HTTPException, UploadFile
 
 import models
-from utils import VALID_FORMATS, extract_files
+from .utils import VALID_FORMATS, extract_files
 
 router = APIRouter()
 

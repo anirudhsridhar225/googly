@@ -14,7 +14,7 @@ from datetime import datetime
 
 from fastapi import UploadFile, HTTPException
 from models.legal_models import Document, DocumentMetadata, DocumentType, SeverityLevel
-from utils import extract_text_auto, VALID_FORMATS
+from .utils import extract_text_auto, VALID_FORMATS
 
 logger = logging.getLogger(__name__)
 
