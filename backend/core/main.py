@@ -124,9 +124,9 @@ app.add_middleware(ErrorMonitoringMiddleware)
 app.add_middleware(RequestTrackingMiddleware)
 
 app.include_router(text_ocr, prefix="/api/ocr", tags=["ocr"])
-app.include_router(user.router, prefix="/api/user", tags=["user"])
-app.include_router(classification.router, prefix="/api/classification", tags=["classification"])
-app.include_router(reference_documents.router, prefix="/api/reference", tags=["reference-documents"])
+app.include_router(user, prefix="/api/user", tags=["user"])
+app.include_router(classification, prefix="/api/classification", tags=["classification"])
+app.include_router(reference_documents, prefix="/api/reference", tags=["reference-documents"])
 
 
 # Global exception handlers for standardized responses
