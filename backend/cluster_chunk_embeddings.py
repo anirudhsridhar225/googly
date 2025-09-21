@@ -15,7 +15,7 @@ import statistics
 from firestore_client import get_firestore_client
 from bucket_manager import BucketManager
 from bucket_store import BucketStore
-from legal_models import Bucket
+from models.legal_models import Bucket
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 logger = logging.getLogger(__name__)

@@ -1,18 +1,30 @@
 "use client";
 
-import React, { useState, useRef, createRef } from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import type { DocumentData } from '../app/page';
+import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { ApiResponse, Clause } from '../types';
 
-// --- Types ---
-type ThreatType = 'green' | 'purple' | 'yellow' | 'red' | 'none';
+// Severity Colors
+const SEVERITY_COLORS = {
+  CRITICAL: '#FF8A8A',
+  HIGH: '#AD88C6',
+  MEDIUM: '#FCDC94',
+  LOW: '#A5B68D'
+};
 
-interface TextSpan {
-  id: string;
+// Highlighted Text Component with Markdown Support
+function HighlightedText({ text, clauses, onClauseClick }: {
   text: string;
-  type: ThreatType;
-}
+  clauses: Clause[];
+  onClauseClick: (clause: Clause) => void;
+}) {
+  type Span = {
+    text: string;
+    highlighted: boolean;
+    clause?: Clause;
+  };
+  // Split text into lines
+  const lines = text.split('\n');
 
 // --- Icon Components ---
 const SearchIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
@@ -28,101 +40,207 @@ const mockDocument: TextSpan[] = [
     { id: 't7', text: ' All stakeholders must review the attached document before the meeting.', type: 'none' },
 ];
 
-// --- Main Component ---
-export default function DocumentViewPage({ onClose, documentData }: { onClose?: () => void; documentData?: DocumentData | null }) {
-    const [activeFilter, setActiveFilter] = useState<ThreatType>('none');
-    const contentRefs = useRef(mockDocument.map(() => createRef<HTMLSpanElement>()));
+  const lines = text.split('\n');
+  const spans: Span[] = [];
 
-    const handleFilterClick = (filter: ThreatType) => {
-        setActiveFilter(prevFilter => prevFilter === filter ? 'none' : filter);
-    };
-
-    const threatColorMap: Record<ThreatType, string> = {
-        green: '#A5B68D',
-        purple: '#AD88C6',
-        yellow: '#FCDC94',
-        red: '#FF8A8A',
-        none: 'transparent',
-    };
-
-    const handleSearch = () => {
-        const targetId = 't5';
-        const targetIndex = mockDocument.findIndex(span => span.id === targetId);
-        if (targetIndex !== -1 && contentRefs.current[targetIndex].current) {
-            contentRefs.current[targetIndex].current?.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-            });
-        }
-    };
-
-    if (!documentData) {
-        return <div>No document selected.</div>;
+  lines.forEach((line, lineIndex) => {
+    let currentText = line;
+    clauses.forEach(clause => {
+      const index = currentText.indexOf(clause.clause_text);
+      if (index !== -1) {
+        const before = currentText.slice(0, index);
+        const after = currentText.slice(index + clause.clause_text.length);
+        spans.push({ text: before, highlighted: false });
+        spans.push({ text: clause.clause_text, highlighted: true, clause });
+        currentText = after;
+      }
+    });
+    if (currentText) {
+      spans.push({ text: currentText, highlighted: false });
     }
+  });
 
+  return (
+    <div>
+      {lines.map((line, lineIndex) => (
+        <p key={lineIndex}>
+          {spans.map((span, spanIndex) => (
+            <span
+              key={spanIndex}
+              style={{
+                backgroundColor: span.highlighted && span.clause ? SEVERITY_COLORS[span.clause.severity as keyof typeof SEVERITY_COLORS] : 'transparent',
+                cursor: span.highlighted ? 'pointer' : 'default'
+              }}
+              onClick={() => span.highlighted && onClauseClick(span.clause)}
+            >
+              {span.text}
+            </span>
+          ))}
+        </p>
+      ))}
+    </div>
+  );
+}
+
+// Modal Component
+function ClauseModal({ clause, isOpen, onClose }: {
+  clause: Clause | null;
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  if (!isOpen || !clause) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white p-6 rounded-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-bold" style={{ color: SEVERITY_COLORS[clause.severity] }}>
+            {clause.severity} Risk
+          </h3>
+          <button onClick={onClose} className="text-gray-500 text-2xl">×</button>
+        </div>
+
+        <div className="mb-4">
+          <h4 className="font-semibold">Clause:</h4>
+          <p className="text-sm bg-gray-100 p-2 rounded">{clause.clause_text}</p>
+        </div>
+
+        <div className="mb-4">
+          <h4 className="font-semibold">Category:</h4>
+          <p>{clause.category}</p>
+        </div>
+
+        <div className="mb-4">
+          <h4 className="font-semibold">Explanation:</h4>
+          <p className="text-sm">{clause.explanation}</p>
+        </div>
+
+        <div className="mb-4">
+          <h4 className="font-semibold">Suggested Action:</h4>
+          <p className="text-sm bg-blue-50 p-2 rounded">{clause.suggested_action}</p>
+        </div>
+
+        <button
+          onClick={onClose}
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// Filter Buttons
+function SeverityFilters({ activeFilter, onFilterChange, counts }: {
+  activeFilter: string;
+  onFilterChange: (filter: string) => void;
+  counts: Record<string, number>;
+}) {
+  const severities = ['ALL', 'CRITICAL', 'HIGH', 'MEDIUM', 'LOW'];
+
+  return (
+    <div className="flex justify-around mb-4">
+      {severities.map(severity => (
+        <button
+          key={severity}
+          onClick={() => onFilterChange(severity)}
+          className={`w-12 h-12 rounded-full text-white font-bold ${
+            activeFilter === severity ? 'ring-2 ring-blue-500' : ''
+          }`}
+          style={{ backgroundColor: severity === 'ALL' ? '#666' : SEVERITY_COLORS[severity as keyof typeof SEVERITY_COLORS] }}
+        >
+          {counts[severity]}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// Main Component
+export default function DocumentViewPage({ onClose, documentData }: {
+  onClose?: () => void;
+  documentData: ApiResponse | null;
+}) {
+  const [activeFilter, setActiveFilter] = useState('ALL');
+  const [selectedClause, setSelectedClause] = useState<Clause | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  if (!documentData) {
     return (
-        <main className="grid place-items-center min-h-screen w-full bg-[#91C8E4] p-4 font-crimson">
-            <div className="relative w-full max-w-sm h-[861px] max-h-[90vh] bg-[#FFFFFF] rounded-[40px] shadow-2xl overflow-hidden border-4 border-blue-200 flex flex-col">
-                <header className="px-6 pt-6 pb-2 flex-shrink-0">
-                     <button
-                    onClick={onClose}
-                    className="w-20 h-20 rounded-full hover:opacity-90 transition-opacity"
-                >
-                     <Image src="/image.png" alt="Back button" width={80} height={80} className="object-contain" />
-                </button>
-                    {documentData && (
-                        <div className="mt-2">
-                            <p className="text-sm text-gray-600 font-crimson-pro">Viewing:</p>
-                            <p className="text-lg font-crimson text-[#4682A9]">{documentData.name}</p>
-                        </div>
-                    )}
-                </header>
-                <footer className="px-6 py-4 bg-white/80 backdrop-blur-sm border-t border-gray-200 flex-shrink-0">
-                    <div className="flex justify-around items-center mb-4">
-                        <motion.button
-                            animate={{ scale: activeFilter === 'green' ? 1.1 : 1, opacity: activeFilter === 'none' || activeFilter === 'green' ? 1 : 0.6 }}
-                            onClick={() => handleFilterClick('green')}
-                            className="w-18 h-14 flex ">
-                                 <Image src="/green.png" alt="Filter Green" width={72} height={56} className="object-contain" />
-                        </motion.button>
-                        <motion.button
-                            animate={{ scale: activeFilter === 'purple' ? 1.1 : 1, opacity: activeFilter === 'none' || activeFilter === 'purple' ? 1 : 0.6 }}
-                            onClick={() => handleFilterClick('purple')}
-                            className="w-18 h-14 flex ">
-                                 <Image src="/purple.png" alt="Filter Purple" width={72} height={56} className="object-contain" />
-                        </motion.button>
-                        <motion.button
-                           animate={{ scale: activeFilter === 'yellow' ? 1.1 : 1, opacity: activeFilter === 'none' || activeFilter === 'yellow' ? 1 : 0.6 }}
-                            onClick={() => handleFilterClick('yellow')}
-                            className="w-18 h-14 flex ">
-                                 <Image src="/yellow.png" alt="Filter Yellow" width={72} height={56} className="object-contain" />
-                        </motion.button>
-                        <motion.button
-                           animate={{ scale: activeFilter === 'red' ? 1.1 : 1, opacity: activeFilter === 'none' || activeFilter === 'red' ? 1 : 0.6 }}
-                            onClick={() => handleFilterClick('red')}
-                            className="w-18 h-14 flex ">
-                                 <Image src="/alert.png" alt="Filter Red" width={72} height={56} className="object-contain" />
-                        </motion.button>
-                    </div>
-                    <div className={`relative font-crimson-pro`}>
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
-                            <SearchIcon />
-                        </span>
-                        <input
-                            type="text"
-                            placeholder="Ask AI Assistant"
-                            className="w-full py-4 pl-12 pr-16 text-gray-800 bg-[#FFFDF0] rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4A90E2]"
-                            onKeyDown={(e) => { if(e.key === 'Enter') handleSearch()}}
-                        />
-                        <button
-                            onClick={() => handleSearch()}
-                            className="absolute inset-y-0 right-0 flex items-center justify-center w-14 h-14 p-2 //bg-[#4A90E2] rounded-full text-white hover:opacity-90 transition"
-                        >
-                             <Image src="/Frame 21.png" alt="Voice Assistant" width={56} height={56} className="object-contain" />
-                        </button>
-                    </div>
-                </footer>
-            </div>
-        </main>
+      <main className="grid place-items-center min-h-screen w-full bg-[#91C8E4] p-4 font-crimson">
+        <div className="relative w-full max-w-sm h-[861px] max-h-[90vh] bg-[#FFFFFF] rounded-[40px] shadow-2xl overflow-hidden border-4 border-blue-200 flex flex-col">
+          <header className="px-6 pt-6 pb-2 flex-shrink-0">
+            <button
+              onClick={onClose}
+              className="w-20 h-20 rounded-full hover:opacity-90 transition-opacity"
+            >
+              <Image src="/image.png" alt="Back button" width={80} height={80} className="object-contain" />
+            </button>
+            {documentData && (
+              <div className="mt-2">
+                <p className="text-sm text-gray-600 font-crimson-pro">Viewing:</p>
+                <p className="text-lg font-crimson text-[#4682A9]">{documentData.name}</p>
+              </div>
+            )}
+          </header>
+          <div className="flex-1 flex flex-col justify-center items-center p-6">
+            <p className="text-center text-gray-600">No document selected.</p>
+          </div>
+        </div>
+      </main>
     );
+  }
+
+  const filteredClauses = activeFilter === 'ALL' ? documentData.clauses : documentData.clauses.filter(clause => clause.severity === activeFilter);
+
+  const severityCounts = {
+    ALL: documentData.clauses.length,
+    CRITICAL: documentData.clauses.filter(c => c.severity === 'CRITICAL').length,
+    HIGH: documentData.clauses.filter(c => c.severity === 'HIGH').length,
+    MEDIUM: documentData.clauses.filter(c => c.severity === 'MEDIUM').length,
+    LOW: documentData.clauses.filter(c => c.severity === 'LOW').length,
+  };
+
+  return (
+    <main className="grid place-items-center min-h-screen w-full bg-[#91C8E4] p-4 font-crimson">
+      <div className="relative w-full max-w-sm h-[861px] max-h-[90vh] bg-[#FFFFFF] rounded-[40px] shadow-2xl overflow-hidden border-4 border-blue-200 flex flex-col">
+        <header className="px-6 pt-6 pb-2 flex-shrink-0">
+          <button
+            onClick={onClose}
+            className="w-20 h-20 rounded-full hover:opacity-90 transition-opacity"
+          >
+            <Image src="/image.png" alt="Back button" width={80} height={80} className="object-contain" />
+          </button>
+          <div className="mt-2">
+            <p className="text-sm text-gray-600 font-crimson-pro">Viewing:</p>
+            <p className="text-lg font-crimson text-[#4682A9]">{documentData.name}</p>
+          </div>
+        </header>
+
+        <div className="flex-1 overflow-y-auto p-6">
+          <SeverityFilters
+            activeFilter={activeFilter}
+            onFilterChange={setActiveFilter}
+            counts={severityCounts}
+          />
+
+          <HighlightedText
+            text={documentData.structured_text}
+            clauses={filteredClauses}
+            onClauseClick={(clause) => {
+              setSelectedClause(clause);
+              setModalOpen(true);
+            }}
+          />
+        </div>
+
+        <ClauseModal
+          clause={selectedClause}
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+        />
+      </div>
+    </main>
+  );
 }

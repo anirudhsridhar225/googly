@@ -5,19 +5,11 @@ import Auth from '../components/Auth';
 import CameraView from '../components/CameraView';
 import Dashboard from '../components/Dashboard';
 import DocumentViewPage from '../components/DocumentView';
-import History from '../components/History';
-import Onboarding from '../components/Onboarding';
-
-export interface DocumentData {
-	id: number
-	name: string
-	date: Date
-	tag?: string
-}
+import { ApiResponse } from '../types';
 
 export default function Home() {
-	const [appState, setAppState] = useState<'auth' | 'onboarding' | 'dashboard' | 'camera' | 'history' | 'document'>('auth');
-	const [selectedDocument, setSelectedDocument] = useState<DocumentData | null>(null);
+  const [appState, setAppState] = useState<'auth' | 'onboarding' | 'dashboard' | 'camera' | 'history' | 'document'>('auth');
+  const [selectedDocument, setSelectedDocument] = useState<ApiResponse | null>(null);
 
 	const handleSignupSuccess = () => {
 		setAppState('onboarding');
@@ -43,9 +35,16 @@ export default function Home() {
 		setAppState('history');
 	};
 
+<<<<<<< Updated upstream
 	const handleCloseHistory = () => {
 		setAppState('dashboard');
 	};
+=======
+  const handleOpenDocument = (documentData: ApiResponse | null = null) => {
+    setSelectedDocument(documentData);
+    setAppState('document');
+  };
+>>>>>>> Stashed changes
 
 	const handleOpenDocument = (documentData?: DocumentData | null) => {
 		// Ensure documentData is not undefined before setting state
@@ -53,13 +52,14 @@ export default function Home() {
 		setAppState('document');
 	};
 
-	const handleCloseDocument = () => {
-		setAppState('history');
-	};
+  const handleDocumentAnalyzed = (documentData: ApiResponse) => {
+    setSelectedDocument(documentData);
+    setAppState('document');
+  };
 
-	return (
-		<>
-			<style jsx global>{`
+  return (
+    <>
+      <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200;0,400;0,600;0,700&family=Crimson+Text:ital,wght@0,400;0,600;0,700&display=swap');
         
         .font-primary {
@@ -78,6 +78,7 @@ export default function Home() {
             font-family: 'Crimson Pro', serif;
         }
       `}</style>
+<<<<<<< Updated upstream
 			<main className="w-screen h-screen bg-[#FAF6D0] flex items-center justify-center sm:p-4">
 				<div className="relative w-full h-full sm:max-w-sm sm:max-h-[850px] flex flex-col bg-[#FFFDF0] sm:rounded-[40px] sm:shadow-2xl overflow-y-auto">
 
@@ -88,8 +89,8 @@ export default function Home() {
 					{appState === 'history' && <History onClose={handleCloseHistory} onOpenDocument={handleOpenDocument} />}
 					{appState === 'document' && <DocumentViewPage onClose={handleCloseDocument} documentData={selectedDocument} />}
 
-				</div>
-			</main>
-		</>
-	);
+        </div>
+      </main>
+    </>
+  );
 }

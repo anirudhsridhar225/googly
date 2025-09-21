@@ -1,8 +1,9 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-import { useRef } from "react";
-import Image from "next/image";
+import { useRef, useState } from "react";
+import { getApiUrl } from "../config";
+import { ApiResponse } from "../types";
 
 // --- Icon Components for Dashboard ---
 const CameraIcon = () => (
@@ -82,7 +83,12 @@ const VectorGraphic = () => (
 );
 
 // THE FIX: The component now accepts an 'onOpenCamera' prop.
-export default function Dashboard({ onLogout, onOpenCamera, onOpenHistory }: { onLogout: () => void; onOpenCamera: () => void; onOpenHistory: () => void; }) {
+export default function Dashboard({ onLogout, onOpenCamera, onOpenHistory, onDocumentAnalyzed }: {
+  onLogout: () => void;
+  onOpenCamera: () => void;
+  onOpenHistory: () => void;
+  onDocumentAnalyzed: (data: ApiResponse) => void;
+}) {
     
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
@@ -101,28 +107,55 @@ export default function Dashboard({ onLogout, onOpenCamera, onOpenHistory }: { o
     };
     
     const fileInputRef = useRef<HTMLInputElement>(null);
-    
+    const [isUploading, setIsUploading] = useState(false);
+
     const handleUploadClick = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
         }
     };
-    
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (files && files.length > 0) {
             const file = files[0];
+
             // Check if the file is a PDF
             if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
-                // Here you would typically send the file to your API
-                console.log('PDF file selected:', file.name);
-                // TODO: Implement API call to send the PDF file
-                // For now, we'll just show an alert
-                alert(`PDF selected: ${file.name}\n\nIn a real implementation, this would be sent to the API.`);
+                setIsUploading(true);
+
+                try {
+                    // Create FormData for multipart upload
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    // Make API call to analyze document
+                    const response = await fetch(getApiUrl('/api/classification/analyze/document'), {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+
+                    // Pass the result to the parent component
+                    onDocumentAnalyzed(result);
+
+                } catch (error) {
+                    console.error('Error uploading file:', error);
+                    alert(`Error analyzing document: ${error instanceof Error ? error.message : 'Unknown error'}`);
+                } finally {
+                    setIsUploading(false);
+                }
             } else {
                 alert('Please select a PDF file.');
             }
         }
+
         // Reset the file input value to allow selecting the same file again
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
@@ -198,13 +231,23 @@ export default function Dashboard({ onLogout, onOpenCamera, onOpenHistory }: { o
                 <button onClick={onOpenCamera} className="p-4 rounded-full bg-[#4682A9] text-white hover:opacity-90 transition-opacity flex items-center justify-center">
                     <CameraIcon />
                 </button>
-                <button 
+                <button
                   onClick={handleUploadClick}
-                  className="flex-grow flex items-center justify-center bg-[#4682A9] text-white py-4 px-6 rounded-full font-semibold text-lg hover:opacity-90 transition-opacity max-w-xs" 
+                  disabled={isUploading}
+                  className="flex-grow flex items-center justify-center bg-[#4682A9] text-white py-4 px-6 rounded-full font-semibold text-lg hover:opacity-90 transition-opacity max-w-xs disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ fontFamily: 'Crimson Pro' }}
                 >
-                    <UploadIcon />
-                    Upload
+                    {isUploading ? (
+                        <>
+                            <div className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                            Analyzing...
+                        </>
+                    ) : (
+                        <>
+                            <UploadIcon />
+                            Upload
+                        </>
+                    )}
                 </button>
             </div>
       </motion.footer>
