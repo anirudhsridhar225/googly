@@ -16,11 +16,11 @@ import asyncio
 import logging
 from typing import List, Optional
 
-from bucket_manager import BucketManager
-from bucket_store import BucketStore
-from document_store import DocumentStore
-from firestore_client import get_firestore_client
-from legal_models import Document, DocumentType
+from storage.bucket_manager import BucketManager
+from storage.bucket_store import BucketStore
+from storage.document_store import DocumentStore
+from storage.firestore_client import get_firestore_client
+from models.legal_models import Document, DocumentType
 
 # Configure logging
 logging.basicConfig(

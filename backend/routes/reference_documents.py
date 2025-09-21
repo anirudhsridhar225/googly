@@ -226,7 +226,7 @@ async def upload_reference_document(
         
         # Generate embedding (this would typically be done by embedding service)
         # For now, we'll create a placeholder - this should be integrated with embedding service
-        from services.embedding_service import EmbeddingService
+        from services.embedding_service import EmbeddingGenerator
         embedding_service = EmbeddingService()
         embedding = await embedding_service.generate_embedding(text)
         

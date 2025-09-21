@@ -890,7 +890,7 @@ async def analyze_document(
             )
         
         # Create a temporary document object for bucket analysis
-        from embedding_service import EmbeddingGenerator
+        from services.embedding_service import EmbeddingGenerator
         from legal_models import DocumentMetadata
         
         temp_metadata = DocumentMetadata(

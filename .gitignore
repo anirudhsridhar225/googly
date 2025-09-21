@@ -1,9 +1,11 @@
 backend/__pycache__/
 backend/routes/__pycache__/
+backend/**/__pycache__/
 backend/.vscode
 backend/.idea
 backend/.env
 backend/googly-25c2b-firebase-adminsdk-fbsvc-248bab283b.json
+backend/stoked-name-466517-b2-809d1e6b5d54.json
 
 frontend/node_modules/
 frontend/.vscode
