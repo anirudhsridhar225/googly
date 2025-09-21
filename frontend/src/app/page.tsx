@@ -5,39 +5,49 @@ import Auth from '../components/Auth';
 import Onboarding from '../components/Onboarding';
 import Dashboard from '../components/Dashboard';
 import CameraView from '../components/CameraView';
-import History from '../components/History'; 
+import History from '../components/History';
+import DocumentViewPage from '../components/DocumentViewPage';
 
 export default function Home() {
-  const [appState, setAppState] = useState<'auth' | 'onboarding' | 'dashboard' | 'camera' | 'history'>('auth');
+  const [appState, setAppState] = useState<'auth' | 'onboarding' | 'dashboard' | 'camera' | 'history' | 'document'>('auth');
+  const [selectedDocument, setSelectedDocument] = useState(null);
 
   const handleSignupSuccess = () => {
     setAppState('onboarding');
   };
 
   const handleOnboardingComplete = () => {
-    setAppState('dashboard'); 
+    setAppState('dashboard');
   };
-  
+
   const handleLogout = () => {
     setAppState('auth');
-  }
+  };
 
   const handleOpenCamera = () => {
     setAppState('camera');
-  }
-  
+  };
+
   const handleCloseCamera = () => {
     setAppState('dashboard');
-  }
+  };
 
   const handleOpenHistory = () => {
     setAppState('history');
-  }
-  
-  // THE FIX: Added a dedicated function to close the history page.
+  };
+
   const handleCloseHistory = () => {
     setAppState('dashboard');
-  }
+  };
+
+  const handleOpenDocument = (documentData = null) => {
+    setSelectedDocument(documentData);
+    setAppState('document');
+  };
+
+  const handleCloseDocument = () => {
+    setAppState('history');
+  };
 
   return (
     <>
@@ -47,8 +57,16 @@ export default function Home() {
         .font-primary {
             font-family: 'Crimson Text', serif;
         }
-
+        
         .font-secondary {
+            font-family: 'Crimson Pro', serif;
+        }
+        
+        .font-crimson {
+            font-family: 'Crimson Text', serif;
+        }
+        
+        .font-crimson-pro {
             font-family: 'Crimson Pro', serif;
         }
       `}</style>
@@ -57,15 +75,13 @@ export default function Home() {
           
           {appState === 'auth' && <Auth onSignupSuccess={handleSignupSuccess} />}
           {appState === 'onboarding' && <Onboarding onComplete={handleOnboardingComplete} />}
-          {/* THE FIX: Dashboard now receives the onOpenHistory prop. */}
           {appState === 'dashboard' && <Dashboard onLogout={handleLogout} onOpenCamera={handleOpenCamera} onOpenHistory={handleOpenHistory} />}
           {appState === 'camera' && <CameraView onClose={handleCloseCamera} />}
-           {/* THE FIX: History now receives the correct handleCloseHistory prop. */}
-          {appState === 'history' && <History onClose={handleCloseHistory} />}
-
+          {appState === 'history' && <History onClose={handleCloseHistory} onOpenDocument={handleOpenDocument} />}
+          {appState === 'document' && <DocumentViewPage onClose={handleCloseDocument} documentData={selectedDocument} />}
+         
         </div>
       </main>
     </>
   );
 }
-
