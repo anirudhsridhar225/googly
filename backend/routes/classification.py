@@ -26,26 +26,18 @@ from fastapi import (
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, ValidationError
 
-from classification_engine import ClassificationEngine
-from document_processing import DocumentProcessor
-from document_store import DocumentStore
-from firestore_client import get_firestore_client
-from legal_models import (
-    FIRESTORE_COLLECTIONS,
-    ClassificationResult,
-    Document,
-    DocumentMetadata,
-    DocumentType,
-    SeverityLevel,
+from models.legal_models import (
+    ClassificationResult, SeverityLevel, DocumentType,
+    Document, DocumentMetadata, FIRESTORE_COLLECTIONS
 )
-from response_formatter import (
-    BatchResponseData,
-    ClassificationResponseData,
-    ErrorCode,
-    ErrorDetail,
-    ResponseFormatter,
-    StandardResponse,
-    StatusCodeMapper,
+from processing.document_processing import DocumentProcessor
+from ai.classification_engine import ClassificationEngine
+from storage.document_store import DocumentStore
+from storage.firestore_client import get_firestore_client
+from services.response_formatter import (
+    ResponseFormatter, StandardResponse, ClassificationResponseData,
+    BatchResponseData, ErrorCode, ErrorDetail, StatusCodeMapper
+)
 )
 
 logger = logging.getLogger(__name__)

@@ -17,18 +17,18 @@ from fastapi import APIRouter, File, UploadFile, HTTPException, status, Query, P
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, ValidationError
 
-from legal_models import (
+from models.legal_models import (
     Document, DocumentType, SeverityLevel, DocumentMetadata,
     Bucket, Rule, RuleCondition, RuleConditionOperator,
     FIRESTORE_COLLECTIONS
 )
-from document_processing import DocumentProcessor
-from document_store import DocumentStore
-from bucket_manager import BucketManager
-from bucket_store import BucketStore
-from rule_store import RuleStore
-from audit_interface import AuditInterfaceService
-from firestore_client import get_firestore_client
+from processing.document_processing import DocumentProcessor
+from storage.document_store import DocumentStore
+from storage.bucket_manager import BucketManager
+from storage.bucket_store import BucketStore
+from rules.rule_store import RuleStore
+from audit.audit_interface import AuditInterfaceService
+from storage.firestore_client import get_firestore_client
 
 logger = logging.getLogger(__name__)
 
@@ -228,7 +228,7 @@ async def upload_reference_document(
         
         # Generate embedding (this would typically be done by embedding service)
         # For now, we'll create a placeholder - this should be integrated with embedding service
-        from embedding_service import EmbeddingService
+        from services.embedding_service import EmbeddingService
         embedding_service = EmbeddingService()
         embedding = await embedding_service.generate_embedding(text)
         
