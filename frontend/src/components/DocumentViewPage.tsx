@@ -32,7 +32,7 @@ const mockDocument: TextSpan[] = [
 ];
 
 // --- Main Component ---
-export default function DocumentViewPage({ onClose, documentData }: { onClose: () => void; documentData?: any }) {
+export default function DocumentViewPage({ onClose, documentData }: { onClose?: () => void; documentData?: any }) {
     
     const [activeFilter, setActiveFilter] = useState<ThreatType>('none');
     const contentRefs = useRef(mockDocument.map(() => createRef<HTMLSpanElement>()));
@@ -61,16 +61,15 @@ export default function DocumentViewPage({ onClose, documentData }: { onClose: (
     };
 
     return (
-        <main className={`flex items-center justify-center min-h-screen w-full bg-[#91C8E4] p-4 font-crimson`}>
-            <div className="relative w-full max-w-sm h-[861px] max-h-[90vh] bg-[#FFFFFF] rounded-[40px] shadow-2xl overflow-hidden border-4 border-white/50 flex flex-col">
-                
-                <header className="px-4 pt-4 pb-2 flex-shrink-0">
-                    <button 
-                        onClick={onClose}
-                        className="inline-flex items-center justify-center w-12 h-12 p-2 rounded-full bg-[#4682A9]/10 hover:bg-[#4682A9]/20 transition-colors text-[#4682A9]"
-                    >
-                        <BackIcon />
-                    </button>
+        <main className="grid place-items-center min-h-screen w-full bg-[#91C8E4] p-4 font-crimson">
+            <div className="relative w-full max-w-sm h-[861px] max-h-[90vh] bg-[#FFFFFF] rounded-[40px] shadow-2xl overflow-hidden border-4 border-blue-200 flex flex-col">
+                <header className="px-6 pt-6 pb-2 flex-shrink-0">
+                     <button 
+                    onClick={onClose} 
+                    className="w-20 h-20 rounded-full hover:opacity-90 transition-opacity"
+                >
+                    <img src="/image.png" alt="Back button" className="w-full h-full object-contain" />
+                </button>
                     {documentData && (
                         <div className="mt-2">
                             <p className="text-sm text-gray-600 font-crimson-pro">Viewing:</p>
@@ -79,7 +78,7 @@ export default function DocumentViewPage({ onClose, documentData }: { onClose: (
                     )}
                 </header>
 
-                <main className="flex-grow p-6 overflow-y-auto text-lg leading-relaxed text-gray-800">
+                <main className="flex-grow px-6 py-4 overflow-y-auto text-lg leading-relaxed text-gray-800">
                     <p>
                         {mockDocument.map((span, index) => (
                             <motion.span
@@ -97,24 +96,32 @@ export default function DocumentViewPage({ onClose, documentData }: { onClose: (
                     </p>
                 </main>
 
-                <footer className="p-4 bg-white/80 backdrop-blur-sm border-t border-gray-200 flex-shrink-0">
+                <footer className="px-6 py-4 bg-white/80 backdrop-blur-sm border-t border-gray-200 flex-shrink-0">
                     <div className="flex justify-around items-center mb-4">
                         <motion.button 
                             animate={{ scale: activeFilter === 'green' ? 1.1 : 1, opacity: activeFilter === 'none' || activeFilter === 'green' ? 1 : 0.6 }}
                             onClick={() => handleFilterClick('green')}
-                            className="w-14 h-14 flex items-center justify-center bg-[#A5B68D] rounded-2xl shadow-md"><CheckIcon /></motion.button>
+                            className="w-18 h-14 flex ">
+                                <img src="/green.png" alt="Filter Green" className="w-full h-full object-contain" />
+                        </motion.button>
                         <motion.button 
                             animate={{ scale: activeFilter === 'purple' ? 1.1 : 1, opacity: activeFilter === 'none' || activeFilter === 'purple' ? 1 : 0.6 }}
                             onClick={() => handleFilterClick('purple')}
-                            className="w-14 h-14 flex items-center justify-center bg-[#AD88C6] rounded-2xl shadow-md"><ExclamationIcon /></motion.button>
+                            className="w-18 h-14 flex ">
+                                <img src="/purple.png" alt="Filter Purple" className="w-full h-full object-contain" />
+                        </motion.button>
                         <motion.button 
                            animate={{ scale: activeFilter === 'yellow' ? 1.1 : 1, opacity: activeFilter === 'none' || activeFilter === 'yellow' ? 1 : 0.6 }}
                             onClick={() => handleFilterClick('yellow')}
-                            className="w-14 h-14 flex items-center justify-center bg-[#FCDC94] rounded-2xl shadow-md"><InfoIcon /></motion.button>
+                            className="w-18 h-14 flex ">
+                                <img src="/yellow.png" alt="Filter Yellow" className="w-full h-full object-contain" />
+                        </motion.button>
                         <motion.button 
                            animate={{ scale: activeFilter === 'red' ? 1.1 : 1, opacity: activeFilter === 'none' || activeFilter === 'red' ? 1 : 0.6 }}
                             onClick={() => handleFilterClick('red')}
-                            className="w-14 h-14 flex items-center justify-center bg-[#FF8A8A] rounded-2xl shadow-md"><PersonIcon /></motion.button>
+                            className="w-18 h-14 flex ">
+                                <img src="/alert.png" alt="Filter Red" className="w-full h-full object-contain" />  
+                        </motion.button>
                     </div>
                     <div className={`relative font-crimson-pro`}>
                         <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
@@ -128,9 +135,9 @@ export default function DocumentViewPage({ onClose, documentData }: { onClose: (
                         />
                         <button 
                             onClick={() => handleSearch('find deadline')}
-                            className="absolute inset-y-0 right-0 flex items-center justify-center w-14 h-14 p-2 bg-[#4A90E2] rounded-full text-white hover:opacity-90 transition"
+                            className="absolute inset-y-0 right-0 flex items-center justify-center w-14 h-14 p-2 //bg-[#4A90E2] rounded-full text-white hover:opacity-90 transition"
                         >
-                            <img src="/voice-button.png" alt="Voice Assistant" className="w-full h-full object-contain" />
+                            <img src="/Frame 21.png" alt="Voice Assistant" className="w-full h-full object-contain" />
                         </button>
                     </div>
                 </footer>
@@ -138,3 +145,4 @@ export default function DocumentViewPage({ onClose, documentData }: { onClose: (
         </main>
     );
 }
+

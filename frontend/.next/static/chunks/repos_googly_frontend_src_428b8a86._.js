@@ -2501,25 +2501,29 @@ function DocumentViewPage(param) {
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
-        className: "flex items-center justify-center min-h-screen w-full bg-[#91C8E4] p-4 font-crimson",
+        className: "grid place-items-center min-h-screen w-full bg-[#91C8E4] p-4 font-crimson",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "relative w-full max-w-sm h-[861px] max-h-[90vh] bg-[#FFFFFF] rounded-[40px] shadow-2xl overflow-hidden border-4 border-white/50 flex flex-col",
+            className: "relative w-full max-w-sm h-[861px] max-h-[90vh] bg-[#FFFFFF] rounded-[40px] shadow-2xl overflow-hidden border-4 border-blue-200 flex flex-col",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
-                    className: "px-4 pt-4 pb-2 flex-shrink-0",
+                    className: "px-6 pt-6 pb-2 flex-shrink-0",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                             onClick: onClose,
-                            className: "inline-flex items-center justify-center w-12 h-12 p-2 rounded-full bg-[#4682A9]/10 hover:bg-[#4682A9]/20 transition-colors text-[#4682A9]",
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(BackIcon, {}, void 0, false, {
+                            className: "w-20 h-20 rounded-full hover:opacity-90 transition-opacity",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                src: "/image.png",
+                                alt: "Back button",
+                                className: "w-full h-full object-contain"
+                            }, void 0, false, {
                                 fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                lineNumber: 72,
-                                columnNumber: 25
+                                lineNumber: 71,
+                                columnNumber: 21
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                            lineNumber: 68,
-                            columnNumber: 21
+                            lineNumber: 67,
+                            columnNumber: 22
                         }, this),
                         documentData && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "mt-2",
@@ -2529,7 +2533,7 @@ function DocumentViewPage(param) {
                                     children: "Viewing:"
                                 }, void 0, false, {
                                     fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                    lineNumber: 76,
+                                    lineNumber: 75,
                                     columnNumber: 29
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2537,23 +2541,23 @@ function DocumentViewPage(param) {
                                     children: documentData.name
                                 }, void 0, false, {
                                     fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                    lineNumber: 77,
+                                    lineNumber: 76,
                                     columnNumber: 29
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                            lineNumber: 75,
+                            lineNumber: 74,
                             columnNumber: 25
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                    lineNumber: 67,
+                    lineNumber: 66,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("main", {
-                    className: "flex-grow p-6 overflow-y-auto text-lg leading-relaxed text-gray-800",
+                    className: "flex-grow px-6 py-4 overflow-y-auto text-lg leading-relaxed text-gray-800",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         children: mockDocument.map((span, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].span, {
                                 ref: contentRefs.current[index],
@@ -2565,21 +2569,21 @@ function DocumentViewPage(param) {
                                 children: span.text
                             }, span.id, false, {
                                 fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                lineNumber: 85,
+                                lineNumber: 84,
                                 columnNumber: 29
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                        lineNumber: 83,
+                        lineNumber: 82,
                         columnNumber: 21
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                    lineNumber: 82,
+                    lineNumber: 81,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
-                    className: "p-4 bg-white/80 backdrop-blur-sm border-t border-gray-200 flex-shrink-0",
+                    className: "px-6 py-4 bg-white/80 backdrop-blur-sm border-t border-gray-200 flex-shrink-0",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "flex justify-around items-center mb-4",
@@ -2590,15 +2594,19 @@ function DocumentViewPage(param) {
                                         opacity: activeFilter === 'none' || activeFilter === 'green' ? 1 : 0.6
                                     },
                                     onClick: ()=>handleFilterClick('green'),
-                                    className: "w-14 h-14 flex items-center justify-center bg-[#A5B68D] rounded-2xl shadow-md",
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(CheckIcon, {}, void 0, false, {
+                                    className: "w-18 h-14 flex ",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                        src: "/green.png",
+                                        alt: "Filter Green",
+                                        className: "w-full h-full object-contain"
+                                    }, void 0, false, {
                                         fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
                                         lineNumber: 105,
-                                        columnNumber: 119
+                                        columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                    lineNumber: 102,
+                                    lineNumber: 101,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].button, {
@@ -2607,15 +2615,19 @@ function DocumentViewPage(param) {
                                         opacity: activeFilter === 'none' || activeFilter === 'purple' ? 1 : 0.6
                                     },
                                     onClick: ()=>handleFilterClick('purple'),
-                                    className: "w-14 h-14 flex items-center justify-center bg-[#AD88C6] rounded-2xl shadow-md",
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ExclamationIcon, {}, void 0, false, {
+                                    className: "w-18 h-14 flex ",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                        src: "/purple.png",
+                                        alt: "Filter Purple",
+                                        className: "w-full h-full object-contain"
+                                    }, void 0, false, {
                                         fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                        lineNumber: 109,
-                                        columnNumber: 119
+                                        lineNumber: 111,
+                                        columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                    lineNumber: 106,
+                                    lineNumber: 107,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].button, {
@@ -2624,15 +2636,19 @@ function DocumentViewPage(param) {
                                         opacity: activeFilter === 'none' || activeFilter === 'yellow' ? 1 : 0.6
                                     },
                                     onClick: ()=>handleFilterClick('yellow'),
-                                    className: "w-14 h-14 flex items-center justify-center bg-[#FCDC94] rounded-2xl shadow-md",
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(InfoIcon, {}, void 0, false, {
+                                    className: "w-18 h-14 flex ",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                        src: "/yellow.png",
+                                        alt: "Filter Yellow",
+                                        className: "w-full h-full object-contain"
+                                    }, void 0, false, {
                                         fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                        lineNumber: 113,
-                                        columnNumber: 119
+                                        lineNumber: 117,
+                                        columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                    lineNumber: 110,
+                                    lineNumber: 113,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].button, {
@@ -2641,21 +2657,25 @@ function DocumentViewPage(param) {
                                         opacity: activeFilter === 'none' || activeFilter === 'red' ? 1 : 0.6
                                     },
                                     onClick: ()=>handleFilterClick('red'),
-                                    className: "w-14 h-14 flex items-center justify-center bg-[#FF8A8A] rounded-2xl shadow-md",
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(PersonIcon, {}, void 0, false, {
+                                    className: "w-18 h-14 flex ",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                        src: "/alert.png",
+                                        alt: "Filter Red",
+                                        className: "w-full h-full object-contain"
+                                    }, void 0, false, {
                                         fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                        lineNumber: 117,
-                                        columnNumber: 119
+                                        lineNumber: 123,
+                                        columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                    lineNumber: 114,
+                                    lineNumber: 119,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                            lineNumber: 101,
+                            lineNumber: 100,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2665,12 +2685,12 @@ function DocumentViewPage(param) {
                                     className: "absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SearchIcon, {}, void 0, false, {
                                         fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                        lineNumber: 121,
+                                        lineNumber: 128,
                                         columnNumber: 29
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                    lineNumber: 120,
+                                    lineNumber: 127,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -2682,36 +2702,36 @@ function DocumentViewPage(param) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                    lineNumber: 123,
+                                    lineNumber: 130,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                     onClick: ()=>handleSearch('find deadline'),
-                                    className: "absolute inset-y-0 right-0 flex items-center justify-center w-14 h-14 p-2 bg-[#4A90E2] rounded-full text-white hover:opacity-90 transition",
+                                    className: "absolute inset-y-0 right-0 flex items-center justify-center w-14 h-14 p-2 //bg-[#4A90E2] rounded-full text-white hover:opacity-90 transition",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$repos$2f$googly$2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
-                                        src: "/voice-button.png",
+                                        src: "/Frame 21.png",
                                         alt: "Voice Assistant",
                                         className: "w-full h-full object-contain"
                                     }, void 0, false, {
                                         fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                        lineNumber: 133,
+                                        lineNumber: 140,
                                         columnNumber: 29
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                                    lineNumber: 129,
+                                    lineNumber: 136,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                            lineNumber: 119,
+                            lineNumber: 126,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/repos/googly/frontend/src/components/DocumentViewPage.tsx",
-                    lineNumber: 100,
+                    lineNumber: 99,
                     columnNumber: 17
                 }, this)
             ]

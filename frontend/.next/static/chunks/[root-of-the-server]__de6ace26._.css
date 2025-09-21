@@ -187,8 +187,7 @@
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --color-red-500: #fb2c36;
-    --color-green-500: #00c758;
-    --color-blue-500: #3080ff;
+    --color-blue-200: #bedbff;
     --color-purple-500: #ac4bff;
     --color-gray-50: #f9fafb;
     --color-gray-100: #f3f4f6;
@@ -247,8 +246,7 @@
   @supports (color: color(display-p3 0 0 0)) {
     :root, :host {
       --color-red-500: color(display-p3 .903738 .262579 .253307);
-      --color-green-500: color(display-p3 .308734 .774754 .374307);
-      --color-blue-500: color(display-p3 .266422 .491219 .988624);
+      --color-blue-200: color(display-p3 .76688 .855207 .987483);
       --color-purple-500: color(display-p3 .629519 .30089 .990817);
       --color-gray-50: color(display-p3 .977213 .98084 .985102);
       --color-gray-100: color(display-p3 .953567 .956796 .964321);
@@ -265,8 +263,7 @@
   @supports (color: lab(0% 0 0)) {
     :root, :host {
       --color-red-500: lab(55.4814% 75.0732 48.8528);
-      --color-green-500: lab(70.5521% -66.5147 45.8073);
-      --color-blue-500: lab(54.1736% 13.3369 -74.6839);
+      --color-blue-200: lab(86.15% -4.04379 -21.0797);
       --color-purple-500: lab(52.0183% 66.11 -78.2316);
       --color-gray-50: lab(98.2596% -.247031 -.706708);
       --color-gray-100: lab(96.1596% -.0823438 -1.13575);
@@ -884,6 +881,10 @@
     width: calc(var(--spacing) * 14);
   }
 
+  .w-18 {
+    width: calc(var(--spacing) * 18);
+  }
+
   .w-20 {
     width: calc(var(--spacing) * 20);
   }
@@ -932,6 +933,10 @@
     flex-direction: column;
   }
 
+  .place-items-center {
+    place-items: center;
+  }
+
   .items-center {
     align-items: center;
   }
@@ -960,22 +965,10 @@
     gap: calc(var(--spacing) * 4);
   }
 
-  :where(.space-y-2 > :not(:last-child)) {
-    --tw-space-y-reverse: 0;
-    margin-top: calc(calc(var(--spacing) * 2) * var(--tw-space-y-reverse));
-    margin-bottom: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-y-reverse)));
-  }
-
   :where(.space-y-3 > :not(:last-child)) {
     --tw-space-y-reverse: 0;
     margin-top: calc(calc(var(--spacing) * 3) * var(--tw-space-y-reverse));
     margin-bottom: calc(calc(var(--spacing) * 3) * calc(1 - var(--tw-space-y-reverse)));
-  }
-
-  :where(.space-y-4 > :not(:last-child)) {
-    --tw-space-y-reverse: 0;
-    margin-top: calc(calc(var(--spacing) * 4) * var(--tw-space-y-reverse));
-    margin-bottom: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-y-reverse)));
   }
 
   :where(.space-x-4 > :not(:last-child)) {
@@ -1022,10 +1015,6 @@
 
   .overflow-y-auto {
     overflow-y: auto;
-  }
-
-  .rounded {
-    border-radius: .25rem;
   }
 
   .rounded-2xl {
@@ -1082,6 +1071,10 @@
 
   .border-\[\#4682A9\] {
     border-color: #4682a9;
+  }
+
+  .border-blue-200 {
+    border-color: var(--color-blue-200);
   }
 
   .border-gray-200 {
@@ -1172,10 +1165,6 @@
     background-color: var(--color-black);
   }
 
-  .bg-blue-500 {
-    background-color: var(--color-blue-500);
-  }
-
   .bg-gray-100 {
     background-color: var(--color-gray-100);
   }
@@ -1184,20 +1173,8 @@
     background-color: var(--color-gray-200);
   }
 
-  .bg-gray-600 {
-    background-color: var(--color-gray-600);
-  }
-
-  .bg-green-500 {
-    background-color: var(--color-green-500);
-  }
-
   .bg-purple-500 {
     background-color: var(--color-purple-500);
-  }
-
-  .bg-red-500 {
-    background-color: var(--color-red-500);
   }
 
   .bg-white {
@@ -1242,6 +1219,10 @@
 
   .p-2 {
     padding: calc(var(--spacing) * 2);
+  }
+
+  .p-3 {
+    padding: calc(var(--spacing) * 3);
   }
 
   .p-4 {
@@ -1290,6 +1271,10 @@
 
   .pt-4 {
     padding-top: calc(var(--spacing) * 4);
+  }
+
+  .pt-6 {
+    padding-top: calc(var(--spacing) * 6);
   }
 
   .pr-2 {
@@ -1593,6 +1578,12 @@
   @media (hover: hover) {
     .hover\:bg-gray-100:hover {
       background-color: var(--color-gray-100);
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:bg-gray-200:hover {
+      background-color: var(--color-gray-200);
     }
   }
 
