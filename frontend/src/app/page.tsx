@@ -71,7 +71,7 @@ export default function Home() {
         }
       `}</style>
       <main className="w-screen h-screen bg-[#FAF6D0] flex items-center justify-center sm:p-4">
-        <div className="relative w-full h-full sm:max-w-sm sm:max-h-[850px] flex flex-col bg-[#FFFDF0] sm:rounded-[40px] sm:shadow-2xl overflow-hidden">
+        <div className="relative w-full h-full sm:max-w-sm sm:max-h-[850px] flex flex-col bg-[#FFFDF0] sm:rounded-[40px] sm:shadow-2xl overflow-y-auto">
           
           {appState === 'auth' && <Auth onSignupSuccess={handleSignupSuccess} />}
           {appState === 'onboarding' && <Onboarding onComplete={handleOnboardingComplete} />}
