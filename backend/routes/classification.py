@@ -105,8 +105,7 @@ async def get_services():
     if not classification_engine:
         classification_engine = ClassificationEngine()
     if not document_store:
-        firestore_client = get_firestore_client()
-        document_store = DocumentStore(firestore_client)
+        document_store = DocumentStore()
     
     return document_processor, classification_engine, document_store
 
@@ -756,4 +755,278 @@ async def get_batch_result(batch_id: str) -> BatchClassificationResponse:
             error_code=ErrorCode.PROCESSING_ERROR,
             message="Failed to get batch result",
             context={"batch_id": batch_id, "error": str(e)}
+        )
+
+
+# Document Analysis Models
+class ClauseData(BaseModel):
+    """Model for identified problematic clause."""
+    clause_text: str
+    start_position: int
+    end_position: int
+    severity: str = Field(..., pattern="^(LOW|MEDIUM|HIGH|CRITICAL)$")
+    category: str
+    explanation: str
+    suggested_action: str
+
+class BucketContext(BaseModel):
+    """Model for bucket context information."""
+    bucket_id: str
+    bucket_name: str
+    similarity_score: float
+    document_count: int
+    relevant_documents: List[str] = Field(default_factory=list)
+
+class DocumentAnalysisResponse(BaseModel):
+    """Response model for document analysis."""
+    structured_text: str
+    clauses: List[ClauseData] = Field(default_factory=list)
+    bucket_context: Optional[BucketContext] = None
+    analysis_metadata: Optional[Dict[str, Any]] = Field(default_factory=dict)
+
+
+@router.post(
+    "/analyze/document",
+    response_model=DocumentAnalysisResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Analyze Legal Document for Predatory Clauses",
+    description="""
+    Analyze a legal document (PDF) for predatory or unfair clauses using AI with bucket-enhanced context.
+    
+    This endpoint processes PDF uploads through a comprehensive AI pipeline:
+    1. Text Extraction: OCR/text extraction from PDF
+    2. Document Bucketing: Find similar reference documents using semantic buckets
+    3. Context Enrichment: Use bucket context to enhance clause analysis
+    4. Text Restructuring: AI converts raw PDF text into clean, readable markdown
+    5. Clause Analysis: AI identifies predatory clauses using tool calls with bucket-informed context
+    
+    The response provides structured data for frontend highlighting and modal interactions.
+    
+    **Processing Pipeline:**
+    - Extract text using OCR/text extraction
+    - Find most relevant semantic bucket based on document similarity
+    - Retrieve context from similar reference documents in the bucket
+    - AI restructuring for clean markdown with context awareness
+    - AI clause analysis with tool calling enhanced by bucket context
+    - Position validation and data collection
+    
+    **Expected processing time:** 30-90 seconds for large documents
+    **Memory usage:** 200-500MB for large documents
+    """
+)
+async def analyze_document(
+    file: UploadFile = File(..., description="PDF document file to analyze")
+) -> DocumentAnalysisResponse:
+    """
+    Analyze a legal document for predatory clauses and return structured analysis.
+    
+    Args:
+        file: PDF document file to analyze
+        
+    Returns:
+        DocumentAnalysisResponse with structured text and identified clauses
+        
+    Raises:
+        HTTPException: If file processing or analysis fails
+    """
+    
+    # Validate file
+    if not file.filename:
+        raise ResponseFormatter.create_http_exception(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            error_code=ErrorCode.VALIDATION_ERROR,
+            message="Filename is required"
+        )
+    
+    if not file.content_type or file.content_type != "application/pdf":
+        raise ResponseFormatter.create_http_exception(
+            status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+            error_code=ErrorCode.UNSUPPORTED_FORMAT,
+            message="Only PDF files are supported",
+            context={"content_type": file.content_type}
+        )
+    
+    logger.info(f"Starting document analysis for file: {file.filename}")
+    start_time = datetime.utcnow()
+    
+    try:
+        # Phase 1: Document Processing - Extract text
+        file_content = await file.read()
+        
+        # Use existing OCR system from utils
+        from utils import extract_text_auto
+        raw_text = extract_text_auto(
+            file_bytes=file_content,
+            content_type=file.content_type,
+            filename=file.filename
+        )
+        
+        if not raw_text or not raw_text.strip():
+            raise ResponseFormatter.create_http_exception(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                error_code=ErrorCode.PROCESSING_ERROR,
+                message="Could not extract text from PDF document"
+            )
+        
+        logger.info(f"Extracted {len(raw_text)} characters from document")
+        
+        # Phase 2: Bucket-Enhanced Context Retrieval
+        # Get services
+        doc_processor, classifier, doc_store = await get_services()
+        
+        if not classifier or not classifier.gemini_classifier:
+            raise ResponseFormatter.create_http_exception(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                error_code=ErrorCode.SERVICE_UNAVAILABLE,
+                message="Classification service not available"
+            )
+        
+        # Create a temporary document object for bucket analysis
+        from legal_models import DocumentMetadata
+        from embedding_service import EmbeddingGenerator
+        
+        temp_metadata = DocumentMetadata(
+            filename=file.filename,
+            file_size=len(file_content),
+            content_hash="temp_analysis",
+            upload_date=datetime.utcnow(),
+            uploader_id="analysis_user"
+        )
+        
+        # Generate embedding for the document text
+        embedding_generator = EmbeddingGenerator()
+        document_embedding = await embedding_generator.generate_embedding(raw_text[:1000])  # Use first 1000 chars for embedding
+        
+        temp_document = Document(
+            text=raw_text,
+            embedding=document_embedding,
+            document_type=DocumentType.CLASSIFICATION,
+            metadata=temp_metadata
+        )
+        
+        # Get bucket context using the classification engine's context retriever
+        bucket_context_info = None
+        context_information = ""
+        
+        try:
+            # Get available buckets
+            available_buckets = await classifier.bucket_store.list_buckets()
+            logger.info(f"Found {len(available_buckets)} available buckets")
+            
+            if available_buckets:
+                # Retrieve context from most relevant bucket
+                context_block = await classifier.context_retriever.retrieve_context(
+                    temp_document, available_buckets[:5]  # Use top 5 buckets for efficiency
+                )
+                
+                # Format context for AI analysis
+                context_chunks = []
+                if context_block and context_block.retrieved_chunks:
+                    for chunk in context_block.retrieved_chunks[:3]:  # Top 3 most relevant chunks
+                        similarity_score = chunk.get('similarity_score', 0.0)
+                        chunk_text = chunk.get('text', '')
+                        context_chunks.append(f"**Reference Example ({similarity_score:.2f} similarity):**\n{chunk_text}\n")
+                
+                context_information = "\n".join(context_chunks) if context_chunks else ""
+                
+                # Create bucket context info for response
+                if context_block and context_block.bucket_info:
+                    bucket_info = context_block.bucket_info
+                    bucket_context_info = BucketContext(
+                        bucket_id=bucket_info.get('bucket_id', ''),
+                        bucket_name=bucket_info.get('bucket_name', ''),
+                        similarity_score=context_block.total_similarity_score,
+                        document_count=bucket_info.get('document_count', 0),
+                        relevant_documents=[chunk.get('document_id', '') for chunk in context_block.retrieved_chunks[:3]]
+                    )
+                    logger.info(f"Using bucket context: {bucket_info.get('bucket_name', 'Unknown')} with {len(context_chunks)} relevant examples")
+                
+        except Exception as e:
+            logger.warning(f"Could not retrieve bucket context: {e}")
+            context_information = ""
+        
+        gemini_classifier = classifier.gemini_classifier
+        
+        # Phase 3: AI Processing - Context-Enhanced Text Restructuring
+        structured_text = await gemini_classifier.restructure_document_text(raw_text)
+        logger.info(f"Restructured text into {len(structured_text)} characters")
+        
+        # Phase 4: AI Processing - Bucket-Enhanced Clause Analysis with Tool Calls
+        # Enhance the clause analysis with bucket context
+        enhanced_analysis_prompt = f"""Use the following reference context from similar legal documents to enhance your analysis:
+
+{context_information}
+
+Now analyze this document:"""
+        
+        clauses_data = await gemini_classifier.analyze_document_clauses(
+            enhanced_analysis_prompt + "\n\n" + structured_text if context_information else structured_text
+        )
+        logger.info(f"Identified {len(clauses_data)} problematic clauses with bucket-enhanced analysis")
+        
+        # Phase 4: Response Assembly - Validate and format clauses
+        validated_clauses = []
+        for clause_data in clauses_data:
+            try:
+                # Validate positions are within bounds
+                start_pos = clause_data.get('start_position', 0)
+                end_pos = clause_data.get('end_position', len(structured_text))
+                
+                if start_pos < 0:
+                    start_pos = 0
+                if end_pos > len(structured_text):
+                    end_pos = len(structured_text)
+                if start_pos >= end_pos:
+                    # Try to find the clause text in the document
+                    clause_text = clause_data.get('clause_text', '')
+                    text_index = structured_text.find(clause_text)
+                    if text_index >= 0:
+                        start_pos = text_index
+                        end_pos = text_index + len(clause_text)
+                    else:
+                        continue  # Skip invalid clause
+                
+                clause = ClauseData(
+                    clause_text=clause_data.get('clause_text', ''),
+                    start_position=start_pos,
+                    end_position=end_pos,
+                    severity=clause_data.get('severity', 'MEDIUM'),
+                    category=clause_data.get('category', ''),
+                    explanation=clause_data.get('explanation', ''),
+                    suggested_action=clause_data.get('suggested_action', '')
+                )
+                validated_clauses.append(clause)
+                
+            except Exception as e:
+                logger.warning(f"Failed to validate clause: {e}")
+                continue
+        
+        logger.info(f"Analysis completed: {len(validated_clauses)} validated clauses")
+        
+        # Prepare analysis metadata
+        analysis_metadata = {
+            "processing_time_ms": int((datetime.utcnow() - start_time).total_seconds() * 1000),
+            "text_length": len(raw_text),
+            "structured_text_length": len(structured_text),
+            "clauses_identified": len(validated_clauses),
+            "bucket_enhanced": bucket_context_info is not None,
+            "context_chunks_used": len(context_information.split("**Reference Example")) - 1 if context_information else 0
+        }
+        
+        return DocumentAnalysisResponse(
+            structured_text=structured_text,
+            clauses=validated_clauses,
+            bucket_context=bucket_context_info,
+            analysis_metadata=analysis_metadata
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error analyzing document {file.filename}: {e}")
+        raise ResponseFormatter.create_http_exception(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            error_code=ErrorCode.PROCESSING_ERROR,
+            message="Failed to analyze document",
+            context={"filename": file.filename, "error": str(e)}
         )

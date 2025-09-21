@@ -13,7 +13,46 @@ instructions to operate the backend:
 
 before contributing please make sure to execute `source .venv/bin/activate` so that your LSP picks up on function and type hints for fastapi etc.
 and pls document whatever responses you will be returning :))
-## OCR extraction
+## Document Analysis
+
+The backend provides AI-powered legal document analysis for identifying predatory clauses:
+
+### Document Analysis Endpoint
+- `POST /api/classification/analyze/document`
+
+**Features:**
+- Two-phase AI pipeline: text restructuring + clause analysis
+- Gemini AI with tool calling for precise clause identification
+- Position-based highlighting support for frontend integration
+- Comprehensive clause categorization and severity assessment
+
+**Request:** `multipart/form-data` with `file` as a PDF document
+
+**Response:** JSON with structured text and identified problematic clauses
+```json
+{
+  "structured_text": "# Clean markdown formatted document...",
+  "clauses": [
+    {
+      "clause_text": "Exact clause text from document",
+      "start_position": 123,
+      "end_position": 456,
+      "severity": "HIGH",
+      "category": "unfair_fees",
+      "explanation": "Detailed explanation of why this clause is problematic",
+      "suggested_action": "Recommended action for the user"
+    }
+  ]
+}
+```
+
+**Example Usage:**
+```bash
+curl -X POST 'http://localhost:8000/api/classification/analyze/document' \
+     -F 'file=@contract.pdf'
+```
+
+## OCR Extraction
 
 This backend can extract text from:
 - PDFs with embedded text

@@ -473,6 +473,189 @@ Ensure your response is valid JSON and includes all required fields."""
         logger.info(f"Completed batch classification for {total_docs} documents")
         return results
     
+    async def restructure_document_text(self, raw_text: str) -> str:
+        """
+        Convert raw PDF text into clean, readable markdown using Gemini.
+        
+        Args:
+            raw_text: Raw text extracted from PDF
+            
+        Returns:
+            Clean markdown-formatted text
+        """
+        if not raw_text or not raw_text.strip():
+            raise ValueError("Document text cannot be empty")
+        
+        prompt = f"""You are an expert document formatter. Your task is to convert raw, unstructured text from a PDF document into clean, well-formatted markdown.
+
+Instructions:
+1. Structure the text with appropriate headings and sections
+2. Clean up formatting issues, line breaks, and spacing
+3. Preserve all original content - do not summarize or omit information
+4. Use markdown formatting (headers, lists, emphasis) to improve readability
+5. Fix obvious OCR errors or formatting artifacts
+6. Maintain the logical flow and organization of the document
+
+Raw Document Text:
+{raw_text}
+
+Please return the restructured text in clean markdown format:"""
+
+        try:
+            response = await asyncio.to_thread(
+                self.model.generate_content,
+                prompt,
+                generation_config=genai.types.GenerationConfig(
+                    temperature=0.1,
+                    top_p=0.8,
+                    top_k=40,
+                    max_output_tokens=4000,
+                )
+            )
+            
+            if not response.text:
+                raise GeminiAPIException("Empty response from Gemini API")
+            
+            return response.text.strip()
+            
+        except Exception as e:
+            logger.error(f"Failed to restructure document text: {e}")
+            # Fallback: return original text with basic markdown formatting
+            return f"# Document\n\n{raw_text}"
+    
+    async def analyze_document_clauses(self, structured_text: str) -> List[Dict[str, Any]]:
+        """
+        Analyze document for predatory clauses using Gemini tool calling.
+        
+        Args:
+            structured_text: Clean, structured markdown text
+            
+        Returns:
+            List of identified problematic clauses
+        """
+        if not structured_text or not structured_text.strip():
+            return []
+        
+        # Define the tool for clause identification
+        clause_analysis_tool = {
+            "function_declarations": [{
+                "name": "identify_problematic_clause",
+                "description": "Identify and analyze a predatory or unfair clause",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "clause_text": {
+                            "type": "string", 
+                            "description": "Exact clause text from document"
+                        },
+                        "start_position": {
+                            "type": "integer", 
+                            "description": "Character position in structured text"
+                        },
+                        "end_position": {
+                            "type": "integer", 
+                            "description": "Character position in structured text"
+                        },
+                        "severity": {
+                            "type": "string", 
+                            "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+                            "description": "Severity level of the problematic clause"
+                        },
+                        "category": {
+                            "type": "string", 
+                            "description": "Type: unfair_fees, hidden_terms, auto_renewal, etc."
+                        },
+                        "explanation": {
+                            "type": "string", 
+                            "description": "Detailed explanation of why problematic"
+                        },
+                        "suggested_action": {
+                            "type": "string", 
+                            "description": "Recommended action for user"
+                        }
+                    },
+                    "required": [
+                        "clause_text", "start_position", "end_position", 
+                        "severity", "category", "explanation", "suggested_action"
+                    ]
+                }
+            }]
+        }
+        
+        prompt = f"""Analyze this legal document for predatory or unfair clauses. Use the identify_problematic_clause tool for each problematic clause you find.
+
+Focus on: unfair fees, hidden terms, automatic renewals, unilateral changes, excessive penalties, arbitration clauses, liability issues, data collection overreach, termination clauses, dispute resolution limitations.
+
+For each problematic clause:
+1. Find the exact text and character positions in the document
+2. Classify severity: CRITICAL (immediate danger), HIGH (significant risk), MEDIUM (moderate concern), LOW (minor issue)
+3. Categorize the type of problem
+4. Explain why it's problematic
+5. Suggest specific actions
+
+Document to analyze:
+{structured_text}"""
+
+        try:
+            # Create model with tools
+            model_with_tools = genai.GenerativeModel(
+                model_name=self.model_name,
+                tools=[clause_analysis_tool]
+            )
+            
+            response = await asyncio.to_thread(
+                model_with_tools.generate_content,
+                prompt,
+                generation_config=genai.types.GenerationConfig(
+                    temperature=0.2,
+                    top_p=0.8,
+                    top_k=40,
+                    max_output_tokens=2000,
+                )
+            )
+            
+            clauses = []
+            
+            # Process function calls from the response
+            if hasattr(response, 'candidates') and response.candidates:
+                for candidate in response.candidates:
+                    if hasattr(candidate, 'content') and hasattr(candidate.content, 'parts'):
+                        for part in candidate.content.parts:
+                            if hasattr(part, 'function_call'):
+                                func_call = part.function_call
+                                if func_call.name == "identify_problematic_clause":
+                                    # Extract arguments from function call
+                                    args = func_call.args
+                                    
+                                    # Validate positions are within bounds
+                                    start_pos = int(args.get('start_position', 0))
+                                    end_pos = int(args.get('end_position', len(structured_text)))
+                                    
+                                    if start_pos < 0:
+                                        start_pos = 0
+                                    if end_pos > len(structured_text):
+                                        end_pos = len(structured_text)
+                                    if start_pos >= end_pos:
+                                        end_pos = start_pos + len(args.get('clause_text', ''))
+                                    
+                                    clause_data = {
+                                        "clause_text": str(args.get('clause_text', '')),
+                                        "start_position": start_pos,
+                                        "end_position": end_pos,
+                                        "severity": str(args.get('severity', 'MEDIUM')),
+                                        "category": str(args.get('category', '')),
+                                        "explanation": str(args.get('explanation', '')),
+                                        "suggested_action": str(args.get('suggested_action', ''))
+                                    }
+                                    clauses.append(clause_data)
+            
+            logger.info(f"Identified {len(clauses)} problematic clauses")
+            return clauses
+            
+        except Exception as e:
+            logger.error(f"Failed to analyze document clauses: {e}")
+            return []
+    
     def validate_classification_result(self, result: ClassificationResponse) -> bool:
         """
         Validate a classification result for consistency and quality.
