@@ -18,13 +18,13 @@ const crimsonPro = Crimson_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Googly",
+  title: "Vero",
   description: "Proofread. Analyze. Simplified.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Googly",
+    title: "Vero",
   },
 };
 

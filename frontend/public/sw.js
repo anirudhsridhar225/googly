@@ -1,4 +1,4 @@
-// Custom service worker for Googly PWA
+// Custom service worker for Vero PWA
 self.addEventListener('install', (event) => {
   console.log('Service Worker installing.');
 });

@@ -21,10 +21,10 @@ const Stripe = ({ d, color, delay }: { d: string; color: string; delay: number; 
 
 const Background = () => {
     const strokes = [
-        { d: "M 550 20 C 330 40, 120 -60, -150 -40", color: "#A5B68D", delay: 0.6 }, { d: "M 550 100 C 330 140, 120 0, -150 40", color: "#AD88C6", delay: 0.4 },
-        { d: "M 550 180 C 350 220, 140 80, -150 120", color: "#FCDC94", delay: 0.2 }, { d: "M 550 260 C 370 300, 160 160, -150 200", color: "#FF8A8A", delay: 0.0 },
-        { d: "M -150 700 C 160 660, 320 800, 550 760", color: "#FF8A8A", delay: 0.0 }, { d: "M -150 780 C 140 740, 300 880, 550 840", color: "#FCDC94", delay: 0.2 },
-        { d: "M -150 860 C 120 820, 280 940, 550 900", color: "#AD88C6", delay: 0.4 }, { d: "M -150 940 C 100 900, 250 1000, 550 960", color: "#A5B68D", delay: 0.6 },
+        { d: "M 670 20 C 450 40, 240 -60, -150 -40", color: "#A5B68D", delay: 0.6 }, { d: "M 670 100 C 450 140, 240 0, -150 40", color: "#AD88C6", delay: 0.4 },
+        { d: "M 670 180 C 470 220, 260 80, -150 120", color: "#FCDC94", delay: 0.2 }, { d: "M 670 260 C 490 300, 280 160, -150 200", color: "#FF8A8A", delay: 0.0 },
+        { d: "M -150 700 C 280 660, 440 800, 670 760", color: "#FF8A8A", delay: 0.0 }, { d: "M -150 780 C 260 740, 420 880, 670 840", color: "#FCDC94", delay: 0.2 },
+        { d: "M -150 860 C 240 820, 400 940, 670 900", color: "#AD88C6", delay: 0.4 }, { d: "M -150 940 C 220 900, 370 1000, 670 960", color: "#A5B68D", delay: 0.6 },
     ];
     return (
         <svg viewBox="-170 -80 840 1100" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 w-full h-full">
@@ -117,7 +117,7 @@ export default function Auth({ onSignupSuccess }: { onSignupSuccess: () => void;
                 <div className="relative z-10 h-full flex flex-col items-center justify-center">
                     <div className="text-center">
                         <h1 className="font-secondary text-2xl font-light text-[#333333]">Welcome to</h1>
-                        <h2 className="font-primary text-8xl font-bold text-[#333333] -mt-4">Googly</h2>
+                        <h2 className="font-primary text-8xl font-bold text-[#333333] -mt-4">Vero</h2>
                         <p className="font-secondary italic text-[#555555] mt-2 text-sm">“Proofread. Analyze. Simplified.”</p>
                     </div>
                 </div>
