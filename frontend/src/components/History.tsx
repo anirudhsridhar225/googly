@@ -7,8 +7,7 @@ import { motion, Variants } from "framer-motion";
 const SearchIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
 const SortIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M7 12h10M10 18h4M3 6l3 3M21 6l-3 3"/></svg>;
 
-
-export default function History({ onClose }: { onClose: () => void; }) {
+export default function History({ onClose, onOpenDocument }: { onClose: () => void; onOpenDocument: (documentData?: any) => void }) {
     const [selectedId, setSelectedId] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
     const [sortOrder, setSortOrder] = useState<"recent" | "alpha">("recent");
@@ -23,7 +22,7 @@ export default function History({ onClose }: { onClose: () => void; }) {
 
     // Memoized calculation for filtering and sorting
     const filteredAndSortedItems = useMemo(() => {
-        const items = historyItems
+        let items = historyItems
             // Filter based on search term
             .filter(item => 
                 item.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -40,7 +39,6 @@ export default function History({ onClose }: { onClose: () => void; }) {
         return items;
     }, [searchTerm, sortOrder]);
 
-
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
@@ -55,6 +53,10 @@ export default function History({ onClose }: { onClose: () => void; }) {
             opacity: 1, x: 0,
             transition: { duration: 0.5, ease: 'easeOut' }
         }
+    };
+
+    const handleViewDocument = (item: any) => {
+        onOpenDocument(item);
     };
 
     return (
@@ -81,7 +83,6 @@ export default function History({ onClose }: { onClose: () => void; }) {
             >
                 <motion.div variants={itemVariants} className="flex items-end justify-between mb-4">
                     <h1 className="font-crimson italic thin text-6xl font-thin text-[#4682A9]">History</h1>
-                    {/* THE FIX: Updated button styling */}
                     <button onClick={() => setSearchTerm("")} className="font-secondary text-xl italic text-[#4682A9] hover:text-[#3a6a8a] transition-colors">Clear</button>
                 </motion.div>
 
@@ -121,7 +122,13 @@ export default function History({ onClose }: { onClose: () => void; }) {
                                         <p className="font-secondary text-xs opacity-80 mb-1">File Name</p>
                                         <p className={`font-primary-crimson font-thin text-xl ${isSelected ? 'text-white' : 'text-[#40404099]'}`}>{item.name}</p>
                                     </div>
-                                    <button className={`font-secondary-crimson pro font-thin py-2 px-6 rounded-full transition-colors duration-300 ${ isSelected ? 'bg-white text-[#4682A9]' : 'bg-[#4682A9] text-white'}`}>
+                                    <button 
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleViewDocument(item);
+                                        }}
+                                        className={`font-secondary-crimson pro font-thin py-2 px-6 rounded-full transition-colors duration-300 ${ isSelected ? 'bg-white text-[#4682A9]' : 'bg-[#4682A9] text-white'}`}
+                                    >
                                         View
                                     </button>
                                 </div>
@@ -137,4 +144,3 @@ export default function History({ onClose }: { onClose: () => void; }) {
         </div>
     );
 }
-
