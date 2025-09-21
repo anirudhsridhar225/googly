@@ -3,10 +3,12 @@
 Test script for the document analysis endpoint.
 """
 
-import os
-import requests
 import json
+import os
 from pathlib import Path
+
+import requests
+
 
 def test_document_analysis_endpoint():
     """Test the document analysis endpoint with a sample PDF."""

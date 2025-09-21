@@ -10,7 +10,7 @@ from typing import List, Dict, Any, Optional
 from datetime import datetime
 from pydantic import BaseModel, Field
 
-from audit_interface import AuditInterfaceService, ReportFormat, AuditAnalyticsTimeframe
+from audit.audit_interface import AuditInterfaceService, ReportFormat, AuditAnalyticsTimeframe
 
 router = APIRouter(prefix="/audit", tags=["audit"])
 
@@ -248,7 +248,7 @@ async def get_available_event_types():
     Returns all supported audit event types for filtering purposes.
     """
     try:
-        from audit_logger import AuditEventType
+        from audit.audit_logger import AuditEventType
         
         event_types = [
             {
@@ -276,7 +276,7 @@ async def get_available_severity_levels():
     Returns all supported audit severity levels for filtering purposes.
     """
     try:
-        from audit_logger import AuditSeverity
+        from audit.audit_logger import AuditSeverity
         
         severity_levels = [
             {

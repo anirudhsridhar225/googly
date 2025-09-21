@@ -8,25 +8,33 @@ This module provides FastAPI endpoints for document classification including:
 - Classification status and result retrieval
 """
 
-import logging
-from typing import List, Optional, Dict, Any
-from uuid import uuid4
 import asyncio
+import logging
+from datetime import datetime
+from typing import Any, Dict, List, Optional
+from uuid import uuid4
 
-from fastapi import APIRouter, File, UploadFile, HTTPException, status, BackgroundTasks, Query
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    File,
+    HTTPException,
+    Query,
+    UploadFile,
+    status,
+)
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, ValidationError
-from datetime import datetime
 
-from legal_models import (
-    ClassificationResult, SeverityLevel, DocumentType, 
+from models.legal_models import (
+    ClassificationResult, SeverityLevel, DocumentType,
     Document, DocumentMetadata, FIRESTORE_COLLECTIONS
 )
-from document_processing import DocumentProcessor
-from classification_engine import ClassificationEngine
-from document_store import DocumentStore
-from firestore_client import get_firestore_client
-from response_formatter import (
+from processing.document_processing import DocumentProcessor
+from ai.classification_engine import ClassificationEngine
+from storage.document_store import DocumentStore
+from storage.firestore_client import get_firestore_client
+from services.response_formatter import (
     ResponseFormatter, StandardResponse, ClassificationResponseData,
     BatchResponseData, ErrorCode, ErrorDetail, StatusCodeMapper
 )
@@ -854,7 +862,7 @@ async def analyze_document(
         file_content = await file.read()
         
         # Use existing OCR system from utils
-        from utils import extract_text_auto
+        from processing.utils import extract_text_auto
         raw_text = extract_text_auto(
             file_bytes=file_content,
             content_type=file.content_type,
@@ -882,8 +890,8 @@ async def analyze_document(
             )
         
         # Create a temporary document object for bucket analysis
-        from legal_models import DocumentMetadata
         from embedding_service import EmbeddingGenerator
+        from legal_models import DocumentMetadata
         
         temp_metadata = DocumentMetadata(
             filename=file.filename,

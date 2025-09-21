@@ -16,3 +16,20 @@ frontend/next-env.d.ts
 .idea
 
 .DS_Store
+backend/creds
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
