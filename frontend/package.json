@@ -12,7 +12,8 @@
     "framer-motion": "^12.23.15",
     "next": "15.5.3",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-markdown": "^10.1.0"
   },
   "devDependencies": {
     "@ducanh2912/next-pwa": "^10.2.9",
