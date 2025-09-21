@@ -2,56 +2,64 @@
 
 import { useState } from 'react';
 import Auth from '../components/Auth';
-import Onboarding from '../components/Onboarding';
-import Dashboard from '../components/Dashboard';
 import CameraView from '../components/CameraView';
-import History from '../components/History';
+import Dashboard from '../components/Dashboard';
 import DocumentViewPage from '../components/DocumentView';
+import History from '../components/History';
+import Onboarding from '../components/Onboarding';
+
+export interface DocumentData {
+	id: number
+	name: string
+	date: Date
+	tag?: string
+}
 
 export default function Home() {
-  const [appState, setAppState] = useState<'auth' | 'onboarding' | 'dashboard' | 'camera' | 'history' | 'document'>('auth');
-  const [selectedDocument, setSelectedDocument] = useState(null);
+	const [appState, setAppState] = useState<'auth' | 'onboarding' | 'dashboard' | 'camera' | 'history' | 'document'>('auth');
+	const [selectedDocument, setSelectedDocument] = useState<DocumentData | null>(null);
 
-  const handleSignupSuccess = () => {
-    setAppState('onboarding');
-  };
-  
-  const handleOnboardingComplete = () => {
-    setAppState('dashboard');
-  };
+	const handleSignupSuccess = () => {
+		setAppState('onboarding');
+	};
 
-  const handleLogout = () => {
-    setAppState('auth');
-  };
+	const handleOnboardingComplete = () => {
+		setAppState('dashboard');
+	};
 
-  const handleOpenCamera = () => {
-    setAppState('camera');
-  };
+	const handleLogout = () => {
+		setAppState('auth');
+	};
 
-  const handleCloseCamera = () => {
-    setAppState('dashboard');
-  };
+	const handleOpenCamera = () => {
+		setAppState('camera');
+	};
 
-  const handleOpenHistory = () => {
-    setAppState('history');
-  };
+	const handleCloseCamera = () => {
+		setAppState('dashboard');
+	};
 
-  const handleCloseHistory = () => {
-    setAppState('dashboard');
-  };
+	const handleOpenHistory = () => {
+		setAppState('history');
+	};
 
-  const handleOpenDocument = (documentData = null) => {
-    setSelectedDocument(documentData);
-    setAppState('document');
-  };
+	const handleCloseHistory = () => {
+		setAppState('dashboard');
+	};
 
-  const handleCloseDocument = () => {
-    setAppState('history');
-  };
+	const handleOpenDocument = (documentData?: DocumentData | null) => {
+		// Ensure documentData is not undefined before setting state
+		setSelectedDocument(documentData ?? null);
+		setAppState('document');
+	};
 
-  return (
-    <>
-      <style jsx global>{`
+	const handleCloseDocument = () => {
+		setAppState('history');
+	};
+
+	return (
+		<>
+			<style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200;0,400;0,600;0,700&family=Crimson+Text:ital,wght@0,400;0,600;0,700&display=swap');
         
         .font-primary {
@@ -70,18 +78,18 @@ export default function Home() {
             font-family: 'Crimson Pro', serif;
         }
       `}</style>
-      <main className="w-screen h-screen bg-[#FAF6D0] flex items-center justify-center sm:p-4">
-        <div className="relative w-full h-full sm:max-w-sm sm:max-h-[850px] flex flex-col bg-[#FFFDF0] sm:rounded-[40px] sm:shadow-2xl overflow-y-auto">
-          
-          {appState === 'auth' && <Auth onSignupSuccess={handleSignupSuccess} />}
-          {appState === 'onboarding' && <Onboarding onComplete={handleOnboardingComplete} />}
-          {appState === 'dashboard' && <Dashboard onLogout={handleLogout} onOpenCamera={handleOpenCamera} onOpenHistory={handleOpenHistory} />}
-          {appState === 'camera' && <CameraView onClose={handleCloseCamera} />}
-          {appState === 'history' && <History onClose={handleCloseHistory} onOpenDocument={handleOpenDocument} />}
-          {appState === 'document' && <DocumentViewPage onClose={handleCloseDocument} documentData={selectedDocument} />}
-         
-        </div>
-      </main>
-    </>
-  );
+			<main className="w-screen h-screen bg-[#FAF6D0] flex items-center justify-center sm:p-4">
+				<div className="relative w-full h-full sm:max-w-sm sm:max-h-[850px] flex flex-col bg-[#FFFDF0] sm:rounded-[40px] sm:shadow-2xl overflow-y-auto">
+
+					{appState === 'auth' && <Auth onSignupSuccess={handleSignupSuccess} />}
+					{appState === 'onboarding' && <Onboarding onComplete={handleOnboardingComplete} />}
+					{appState === 'dashboard' && <Dashboard onLogout={handleLogout} onOpenCamera={handleOpenCamera} onOpenHistory={handleOpenHistory} />}
+					{appState === 'camera' && <CameraView onClose={handleCloseCamera} />}
+					{appState === 'history' && <History onClose={handleCloseHistory} onOpenDocument={handleOpenDocument} />}
+					{appState === 'document' && <DocumentViewPage onClose={handleCloseDocument} documentData={selectedDocument} />}
+
+				</div>
+			</main>
+		</>
+	);
 }

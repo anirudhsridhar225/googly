@@ -50,7 +50,6 @@ const Background = () => {
 
 export default function CameraView({ onClose }: { onClose: () => void; }) {
     const videoRef = useRef<HTMLVideoElement>(null);
-    const [stream, setStream] = useState<MediaStream | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -62,7 +61,6 @@ export default function CameraView({ onClose }: { onClose: () => void; }) {
                 mediaStream = await navigator.mediaDevices.getUserMedia({
                     video: { facingMode: "environment" } // Prefer the rear camera
                 });
-                setStream(mediaStream);
                 if (videoRef.current) {
                     videoRef.current.srcObject = mediaStream;
                 }

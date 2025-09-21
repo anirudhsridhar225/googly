@@ -2,6 +2,7 @@
 
 import { motion, Variants } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
 
 // --- Icon Components for Dashboard ---
 const CameraIcon = () => (
@@ -55,14 +56,12 @@ const ProfileIcon = () => (
 const VectorGraphic = () => (
     <>
         {/* PNG Vector - correct filename */}
-        <img 
-            src="/Vector.png" 
-            alt="Decorative vector" 
+        <Image
+            src="/Vector.png"
+            alt="Decorative vector"
+            width={384}
+            height={256}
             className="absolute -top-8 -right-8 w-96 h-64 object-contain opacity-90"
-            onError={(e) => {
-                // Hide broken image if PNG fails to load
-                (e.target as HTMLImageElement).style.display = 'none';
-            }}
         />
         
         {/* SVG Fallback - similar to your reference image */}
