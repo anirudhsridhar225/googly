@@ -5,29 +5,34 @@ This module implements the GeminiClassifier class that uses Google's Gemini API
 for document severity classification with structured prompts and JSON response parsing.
 """
 
+import asyncio
 import json
 import logging
-import asyncio
-from typing import Dict, Any, Optional, List
-from datetime import datetime
 import re
+from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 import google.generativeai as genai
 from google.api_core import exceptions as gcp_exceptions
 from google.api_core import retry
 
 from config import get_gemini_config
-from legal_models import SeverityLevel, ClassificationResult, RoutingDecision
-from retry_mechanisms import (
-    RetryMechanism, CircuitBreaker, gemini_retry_config, gemini_circuit_breaker,
-    fallback_strategy
-)
+from error_logger import error_logger
 from exceptions import (
-    GeminiAPIException, GeminiRateLimitException, GeminiServiceUnavailableException,
-    GeminiResponseParsingException
+    GeminiAPIException,
+    GeminiRateLimitException,
+    GeminiResponseParsingException,
+    GeminiServiceUnavailableException,
 )
 from fallback_classifier import fallback_classifier
-from error_logger import error_logger
+from legal_models import ClassificationResult, RoutingDecision, SeverityLevel
+from retry_mechanisms import (
+    CircuitBreaker,
+    RetryMechanism,
+    fallback_strategy,
+    gemini_circuit_breaker,
+    gemini_retry_config,
+)
 
 logger = logging.getLogger(__name__)
 
