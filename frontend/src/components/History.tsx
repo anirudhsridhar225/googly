@@ -47,76 +47,6 @@ export default function History({ onClose, onOpenDocument }: { onClose: () => vo
 		return items;
 	}, [searchTerm, sortOrder]);
 
-<<<<<<< HEAD
-    const handleViewDocument = (item: any) => {
-        // Mock API response for prototype
-        const mockApiResponse = {
-            structured_text: `# Sample Contract Document
-
-This is a sample legal document for demonstration purposes. The following clause contains potential issues that should be reviewed carefully.
-
-Any invention or work developed by Employee during the course of employment and related to Employer's business shall belong to Employer. This includes all intellectual property rights, patents, copyrights, and trade secrets.
-
-The employee agrees to indemnify and hold harmless the Employer from any claims, damages, or liabilities arising from the employee's actions during employment.
-
-This agreement shall remain in effect for a period of 2 years following termination of employment, during which time the employee shall not engage in any competitive business activities.
-
-The employer reserves the right to modify these terms at any time with 30 days written notice to the employee.
-
-All disputes shall be resolved through binding arbitration in the state of California under the rules of the American Arbitration Association.
-
-The employee acknowledges that they have read and understood all terms of this agreement and agree to be bound by them.`,
-            clauses: [
-                {
-                    clause_text: "Any invention or work developed by Employee during the course of employment and related to Employer's business shall belong to Employer.",
-                    start_position: 171,
-                    end_position: 307,
-                    severity: "HIGH",
-                    category: "Intellectual Property",
-                    explanation: "This clause grants the Employer broad ownership of any invention or work developed by the Employee during their employment, even if it's outside of their core responsibilities or created during personal time. This could stifle the Employee's creativity and future opportunities.",
-                    suggested_action: "Request to narrow the scope of the clause to inventions directly related to the Employee's assigned duties and developed using company resources. Propose adding language that inventions created outside of work hours or unrelated to the company's business remain the Employee's property."
-                },
-                {
-                    clause_text: "The employee agrees to indemnify and hold harmless the Employer from any claims, damages, or liabilities arising from the employee's actions during employment.",
-                    start_position: 397,
-                    end_position: 556,
-                    severity: "MEDIUM",
-                    category: "Liability & Risk",
-                    explanation: "This indemnification clause requires the employee to cover the employer's legal costs and damages for any claims arising from their employment actions, which could be overly broad and unfair.",
-                    suggested_action: "Limit the indemnification to actions performed within the scope of employment and in good faith. Consider mutual indemnification or caps on liability amounts."
-                },
-                {
-                    clause_text: "This agreement shall remain in effect for a period of 2 years following termination of employment, during which time the employee shall not engage in any competitive business activities.",
-                    start_position: 558,
-                    end_position: 744,
-                    severity: "HIGH",
-                    category: "Confidentiality & Restrictions",
-                    explanation: "This non-compete clause extends for 2 years after employment ends and broadly prohibits 'competitive business activities' without geographic or scope limitations, which may be overly restrictive and unenforceable in many jurisdictions.",
-                    suggested_action: "Reduce the time period to 6-12 months, define specific geographic limitations, and clearly define what constitutes 'competitive business activities' related to the employee's specific role."
-                },
-                {
-                    clause_text: "The employer reserves the right to modify these terms at any time with 30 days written notice to the employee.",
-                    start_position: 746,
-                    end_position: 856,
-                    severity: "MEDIUM",
-                    category: "Modification & Control",
-                    explanation: "This unilateral modification clause allows the employer to change terms with only 30 days notice, which could disadvantage the employee significantly.",
-                    suggested_action: "Require mutual agreement for material changes, or limit modifications to non-essential terms. Consider requiring employee consent for significant changes."
-                },
-                {
-                    clause_text: "All disputes shall be resolved through binding arbitration in the state of California under the rules of the American Arbitration Association.",
-                    start_position: 858,
-                    end_position: 1000,
-                    severity: "LOW",
-                    category: "Dispute Resolution",
-                    explanation: "This arbitration clause is relatively standard but forces resolution outside of court, which may limit the employee's access to legal remedies.",
-                    suggested_action: "This is generally acceptable, but consider adding language that preserves the right to seek injunctive relief in court for certain claims."
-                }
-            ]
-        };
-        onOpenDocument(mockApiResponse);
-    };
-=======
 	const containerVariants: Variants = {
 		hidden: { opacity: 0 },
 		visible: {
@@ -124,7 +54,6 @@ The employee acknowledges that they have read and understood all terms of this a
 			transition: { staggerChildren: 0.1 }
 		}
 	};
->>>>>>> 60967e2 ([feat]: pre deploy frontend push)
 
 	const itemVariants: Variants = {
 		hidden: { opacity: 0, x: -20 },
