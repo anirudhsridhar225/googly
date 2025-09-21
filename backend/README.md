@@ -74,3 +74,32 @@ User routes (prefix `-/api/user-`):
 - POST `/api/user/add` — create a user (stores in Firestore).
 - DELETE `/api/user/delete/{id}` — delete a user by ID.
 - PUT `/api/user/update/{id}` — update user fields; if `wants_history` becomes false, `history` is cleared.
+
+## Document Analysis Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant Backend
+    participant Gemini AI
+
+    User->>Frontend: Upload PDF document
+    Frontend->>Backend: POST /api/classification/analyze/document<br/>(multipart/form-data with PDF)
+
+    Backend->>Backend: Extract text using existing utils.extract_text_auto()
+    Backend->>Gemini AI: Restructure text to clean markdown
+    Gemini AI-->>Backend: Return formatted markdown
+
+    Backend->>Gemini AI: Analyze clauses with tool calls<br/>(identify_problematic_clause function)
+    Gemini AI-->>Backend: Multiple tool calls, one per clause
+    Backend->>Backend: Collect and validate clause data
+
+    Backend-->>Frontend: JSON response with:<br/>- structured_text (markdown)<br/>- clauses[] with positions & details
+    Frontend->>Frontend: Render markdown with marked.js
+    Frontend->>Frontend: Apply highlights using clause positions
+    Frontend-->>User: Display document with interactive clause highlights
+
+    User->>Frontend: Click on highlighted clause
+    Frontend->>Frontend: Show modal with clause details<br/>(severity, explanation, suggested action)
+```
