@@ -93,8 +93,6 @@ app = FastAPI(
     """,
     version="1.0.0",
     lifespan=lifespan,
-    docs_url="/docs",
-    redoc_url="/redoc",
     openapi_url="/openapi.json",
     contact={
         "name": "Legal Document Classification Team",
