@@ -47,16 +47,17 @@ class BaseCustomException(Exception):
     
     def _log_exception(self):
         """Log the exception based on its severity."""
+        # Avoid keys that conflict with logging.LogRecord attributes (e.g. 'message')
         log_data = {
             "error_code": self.error_code,
-            "message": self.message,
+            "error_message": self.message,
             "severity": self.severity.value,
             "context": self.context
         }
-        
+         
         if self.cause:
             log_data["cause"] = str(self.cause)
-        
+         
         if self.severity == ErrorSeverity.CRITICAL:
             logger.critical(f"Critical error: {self.message}", extra=log_data, exc_info=self.cause)
         elif self.severity == ErrorSeverity.HIGH:
@@ -70,7 +71,7 @@ class BaseCustomException(Exception):
         """Convert exception to dictionary for API responses."""
         return {
             "error_code": self.error_code,
-            "message": self.message,
+            "error_message": self.message,
             "severity": self.severity.value,
             "context": self.context
         }

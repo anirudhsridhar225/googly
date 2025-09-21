@@ -132,7 +132,7 @@ class ErrorLogger:
         log_data = {
             "timestamp": datetime.utcnow().isoformat(),
             "error_code": error_code,
-            "message": message,
+            "error_message": message,
             "request_id": request_id,
             "user_id": user_id,
             "context": context or {}

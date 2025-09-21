@@ -1,0 +1,291 @@
+nohup: ignoring input
+INFO:     Started server process [69123]
+INFO:     Waiting for application startup.
+INFO:main:Starting Legal Document Severity Classification System...
+INFO:startup:Starting comprehensive system initialization checks...
+INFO:startup:Running check: Validate application configuration
+INFO:config:Configuration validation successful
+INFO:startup:✅ Configuration validation passed
+INFO:startup:Running check: Check environment variables
+INFO:startup:✅ All required environment variables present
+INFO:startup:Running check: Test Firestore database connection
+INFO:firestore_client:Firestore client initialized for project: stoked-name-466517-b2, database: (default)
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1758470912.555098   69123 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+INFO:firestore_client:Firestore connection test successful
+INFO:startup:✅ Firestore connection test passed
+INFO:startup:Running check: Initialize Firestore collections and schema
+INFO:firestore_client:Collection 'legal_documents' initialized
+INFO:firestore_client:Collection 'semantic_buckets' initialized
+INFO:firestore_client:Collection 'document_classifications' initialized
+INFO:firestore_client:Collection 'classification_rules' initialized
+INFO:firestore_client:Collection 'review_queue' initialized
+INFO:firestore_client:All Firestore collections initialized successfully
+INFO:startup:✅ Firestore schema initialized successfully
+INFO:startup:Running check: Validate Gemini API configuration
+INFO:startup:✅ Gemini API configuration validated
+INFO:startup:Running check: Test Gemini API connectivity
+INFO:embedding_service:Initialized EmbeddingGenerator with model: models/embedding-001
+INFO:startup:✅ Gemini API connectivity test passed
+INFO:startup:Running check: Initialize performance monitoring
+INFO:startup:✅ Performance monitoring initialized
+INFO:startup:Running check: Initialize audit logging system
+INFO:audit_logger:Initialized AuditLogger
+INFO:startup:✅ Audit logging system initialized
+INFO:startup:✅ All critical startup checks completed successfully in 1.33s
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:middleware:Request started: POST /api/classification/analyze/document
+INFO:routes.classification:Starting document analysis for file: good_employment_agreement.pdf
+INFO:routes.classification:Extracted 2439 characters from document
+INFO:embedding_service:Initialized EmbeddingGenerator with model: models/embedding-001
+INFO:retry_mechanisms:Registered fallback handler for gemini_classification
+INFO:gemini_classifier:Initialized GeminiClassifier with model: gemini-1.5-pro
+INFO:confidence_calculator:Initialized ConfidenceCalculator
+INFO:confidence_warning_system:Initialized ConfidenceWarningSystem
+INFO:audit_logger:Initialized AuditLogger
+INFO:classification_engine:Initialized ClassificationEngine with comprehensive audit logging
+INFO:embedding_service:Initialized EmbeddingGenerator with model: models/embedding-001
+INFO:routes.classification:Found 21 available buckets
+INFO:context_retriever:Retrieving context for document 5bc6df18-bcf5-4a95-a188-a327c3a1fb7a from 2 buckets
+INFO:bucket_manager:Bucket similarities (threshold=0.30): Schema Initialization Bucket:0.000, chunk_cluster_3:0.666
+INFO:bucket_manager:Found 1 relevant buckets out of 2 total
+INFO:context_retriever:Using pre-computed embeddings for 1 documents, 2204 chunks
+/home/rishab/Documents/googly/.venv/lib64/python3.13/site-packages/google/cloud/firestore_v1/base_collection.py:304: UserWarning: Detected filter using positional arguments. Prefer using the 'filter' keyword argument instead.
+  return query.where(field_path, op_string, value)
+INFO:context_retriever:Calculated similarity scores for 2204 chunks using stored embeddings
+INFO:context_retriever:Retrieved 10 chunks from 1 buckets (avg similarity: 0.666)
+INFO:routes.classification:Using bucket context: chunk_cluster_3 with 5 relevant examples
+E0000 00:00:1758471000.491910   70386 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+INFO:routes.classification:Restructured text into 2462 characters
+INFO:gemini_classifier:Identified 2 problematic clauses
+INFO:routes.classification:Identified 2 problematic clauses with bucket-enhanced analysis
+INFO:routes.classification:Analysis completed: 2 validated clauses
+WARNING:middleware:Slow request detected: POST /api/classification/analyze/document took 67.94s
+INFO:middleware:Request completed: POST /api/classification/analyze/document - 200
+INFO:     127.0.0.1:58918 - "POST /api/classification/analyze/document HTTP/1.1" 200 OK
+INFO:middleware:Request started: POST /api/classification/analyze/document
+INFO:routes.classification:Starting document analysis for file: good_employment_agreement.pdf
+INFO:routes.classification:Extracted 2439 characters from document
+INFO:embedding_service:Initialized EmbeddingGenerator with model: models/embedding-001
+INFO:routes.classification:Found 21 available buckets
+INFO:context_retriever:Retrieving context for document 58eb638f-1318-4d30-bef2-928040f25d28 from 2 buckets
+INFO:bucket_manager:Bucket similarities (threshold=0.30): Schema Initialization Bucket:0.000, chunk_cluster_3:0.666
+INFO:bucket_manager:Found 1 relevant buckets out of 2 total
+INFO:context_retriever:Using pre-computed embeddings for 1 documents, 2204 chunks
+/home/rishab/Documents/googly/.venv/lib64/python3.13/site-packages/google/cloud/firestore_v1/base_collection.py:304: UserWarning: Detected filter using positional arguments. Prefer using the 'filter' keyword argument instead.
+  return query.where(field_path, op_string, value)
+INFO:context_retriever:Calculated similarity scores for 2204 chunks using stored embeddings
+INFO:context_retriever:Retrieved 10 chunks from 1 buckets (avg similarity: 0.666)
+INFO:routes.classification:Using bucket context: chunk_cluster_3 with 5 relevant examples
+INFO:routes.classification:Restructured text into 2452 characters
+E0000 00:00:1758471093.004423   70386 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+INFO:gemini_classifier:Identified 2 problematic clauses
+INFO:routes.classification:Identified 2 problematic clauses with bucket-enhanced analysis
+INFO:routes.classification:Analysis completed: 2 validated clauses
+WARNING:middleware:Slow request detected: POST /api/classification/analyze/document took 69.55s
+INFO:middleware:Request completed: POST /api/classification/analyze/document - 200
+INFO:     127.0.0.1:52564 - "POST /api/classification/analyze/document HTTP/1.1" 200 OK
+INFO:middleware:Request started: POST /api/classification/analyze/document
+INFO:routes.classification:Starting document analysis for file: bad_loan_agreement.pdf
+INFO:routes.classification:Extracted 2435 characters from document
+INFO:embedding_service:Initialized EmbeddingGenerator with model: models/embedding-001
+INFO:routes.classification:Found 21 available buckets
+INFO:context_retriever:Retrieving context for document a46533a5-1263-4e68-8185-3405c1832c9b from 2 buckets
+INFO:bucket_manager:Bucket similarities (threshold=0.30): Schema Initialization Bucket:0.000, chunk_cluster_3:0.684
+INFO:bucket_manager:Found 1 relevant buckets out of 2 total
+INFO:context_retriever:Using pre-computed embeddings for 1 documents, 2204 chunks
+/home/rishab/Documents/googly/.venv/lib64/python3.13/site-packages/google/cloud/firestore_v1/base_collection.py:304: UserWarning: Detected filter using positional arguments. Prefer using the 'filter' keyword argument instead.
+  return query.where(field_path, op_string, value)
+INFO:context_retriever:Calculated similarity scores for 2204 chunks using stored embeddings
+INFO:context_retriever:Retrieved 10 chunks from 1 buckets (avg similarity: 0.684)
+INFO:routes.classification:Using bucket context: chunk_cluster_3 with 5 relevant examples
+INFO:routes.classification:Restructured text into 2644 characters
+E0000 00:00:1758471256.240590   70386 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+INFO:gemini_classifier:Identified 8 problematic clauses
+INFO:routes.classification:Identified 8 problematic clauses with bucket-enhanced analysis
+INFO:routes.classification:Analysis completed: 8 validated clauses
+WARNING:middleware:Slow request detected: POST /api/classification/analyze/document took 81.70s
+INFO:middleware:Request completed: POST /api/classification/analyze/document - 200
+INFO:     127.0.0.1:41942 - "POST /api/classification/analyze/document HTTP/1.1" 200 OK
+INFO:middleware:Request started: POST /api/classification/analyze/document
+INFO:routes.classification:Starting document analysis for file: bad_loan_agreement.pdf
+INFO:routes.classification:Extracted 2435 characters from document
+INFO:embedding_service:Initialized EmbeddingGenerator with model: models/embedding-001
+INFO:routes.classification:Found 21 available buckets
+INFO:context_retriever:Retrieving context for document 164b3903-93b2-4648-9326-81201473c604 from 2 buckets
+INFO:bucket_manager:Bucket similarities (threshold=0.30): Schema Initialization Bucket:0.000, chunk_cluster_3:0.684
+INFO:bucket_manager:Found 1 relevant buckets out of 2 total
+INFO:context_retriever:Using pre-computed embeddings for 1 documents, 2204 chunks
+/home/rishab/Documents/googly/.venv/lib64/python3.13/site-packages/google/cloud/firestore_v1/base_collection.py:304: UserWarning: Detected filter using positional arguments. Prefer using the 'filter' keyword argument instead.
+  return query.where(field_path, op_string, value)
+INFO:context_retriever:Calculated similarity scores for 2204 chunks using stored embeddings
+INFO:context_retriever:Retrieved 10 chunks from 1 buckets (avg similarity: 0.684)
+INFO:routes.classification:Using bucket context: chunk_cluster_3 with 5 relevant examples
+INFO:middleware:Request started: POST /api/classification/analyze/document
+INFO:routes.classification:Starting document analysis for file: bad_loan_agreement.pdf
+INFO:routes.classification:Extracted 2435 characters from document
+INFO:embedding_service:Initialized EmbeddingGenerator with model: models/embedding-001
+INFO:routes.classification:Found 21 available buckets
+INFO:context_retriever:Retrieving context for document 066c05dc-f6d9-44ca-af3f-3fa22f326177 from 2 buckets
+INFO:bucket_manager:Bucket similarities (threshold=0.30): Schema Initialization Bucket:0.000, chunk_cluster_3:0.684
+INFO:bucket_manager:Found 1 relevant buckets out of 2 total
+INFO:context_retriever:Using pre-computed embeddings for 1 documents, 2204 chunks
+/home/rishab/Documents/googly/.venv/lib64/python3.13/site-packages/google/cloud/firestore_v1/base_collection.py:304: UserWarning: Detected filter using positional arguments. Prefer using the 'filter' keyword argument instead.
+  return query.where(field_path, op_string, value)
+INFO:context_retriever:Calculated similarity scores for 2204 chunks using stored embeddings
+INFO:context_retriever:Retrieved 10 chunks from 1 buckets (avg similarity: 0.684)
+INFO:routes.classification:Using bucket context: chunk_cluster_3 with 5 relevant examples
+INFO:routes.classification:Restructured text into 2585 characters
+E0000 00:00:1758471425.966959   76620 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+INFO:routes.classification:Restructured text into 2570 characters
+INFO:gemini_classifier:Identified 0 problematic clauses
+INFO:routes.classification:Identified 0 problematic clauses with bucket-enhanced analysis
+INFO:routes.classification:Analysis completed: 0 validated clauses
+WARNING:middleware:Slow request detected: POST /api/classification/analyze/document took 131.28s
+INFO:middleware:Request completed: POST /api/classification/analyze/document - 200
+INFO:gemini_classifier:Identified 11 problematic clauses
+INFO:routes.classification:Identified 11 problematic clauses with bucket-enhanced analysis
+INFO:routes.classification:Analysis completed: 11 validated clauses
+WARNING:middleware:Slow request detected: POST /api/classification/analyze/document took 87.01s
+INFO:middleware:Request completed: POST /api/classification/analyze/document - 200
+INFO:     127.0.0.1:46214 - "POST /api/classification/analyze/document HTTP/1.1" 200 OK
+INFO:middleware:Request started: POST /api/classification/analyze/document
+INFO:routes.classification:Starting document analysis for file: bad_loan_agreement.pdf
+INFO:routes.classification:Extracted 2435 characters from document
+INFO:embedding_service:Initialized EmbeddingGenerator with model: models/embedding-001
+INFO:routes.classification:Found 21 available buckets
+INFO:context_retriever:Retrieving context for document a4e848e5-df12-4c39-bafa-e1190f70de70 from 2 buckets
+INFO:bucket_manager:Bucket similarities (threshold=0.30): Schema Initialization Bucket:0.000, chunk_cluster_3:0.684
+INFO:bucket_manager:Found 1 relevant buckets out of 2 total
+INFO:context_retriever:Using pre-computed embeddings for 1 documents, 2204 chunks
+/home/rishab/Documents/googly/.venv/lib64/python3.13/site-packages/google/cloud/firestore_v1/base_collection.py:304: UserWarning: Detected filter using positional arguments. Prefer using the 'filter' keyword argument instead.
+  return query.where(field_path, op_string, value)
+INFO:context_retriever:Calculated similarity scores for 2204 chunks using stored embeddings
+INFO:context_retriever:Retrieved 10 chunks from 1 buckets (avg similarity: 0.684)
+INFO:routes.classification:Using bucket context: chunk_cluster_3 with 5 relevant examples
+INFO:routes.classification:Restructured text into 2570 characters
+E0000 00:00:1758471564.715021   70386 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+INFO:gemini_classifier:Identified 0 problematic clauses
+INFO:routes.classification:Identified 0 problematic clauses with bucket-enhanced analysis
+INFO:routes.classification:Analysis completed: 0 validated clauses
+WARNING:middleware:Slow request detected: POST /api/classification/analyze/document took 83.87s
+INFO:middleware:Request completed: POST /api/classification/analyze/document - 200
+INFO:     127.0.0.1:53636 - "POST /api/classification/analyze/document HTTP/1.1" 200 OK
+INFO:middleware:Request started: POST /api/classification/analyze/document
+INFO:routes.classification:Starting document analysis for file: bad_loan_agreement.pdf
+INFO:routes.classification:Extracted 2435 characters from document
+INFO:embedding_service:Initialized EmbeddingGenerator with model: models/embedding-001
+INFO:routes.classification:Found 21 available buckets
+INFO:context_retriever:Retrieving context for document c771d004-8052-46fc-9aca-cf8d23ec9c28 from 2 buckets
+INFO:bucket_manager:Bucket similarities (threshold=0.30): Schema Initialization Bucket:0.000, chunk_cluster_3:0.684
+INFO:bucket_manager:Found 1 relevant buckets out of 2 total
+INFO:context_retriever:Using pre-computed embeddings for 1 documents, 2204 chunks
+/home/rishab/Documents/googly/.venv/lib64/python3.13/site-packages/google/cloud/firestore_v1/base_collection.py:304: UserWarning: Detected filter using positional arguments. Prefer using the 'filter' keyword argument instead.
+  return query.where(field_path, op_string, value)
+INFO:context_retriever:Calculated similarity scores for 2204 chunks using stored embeddings
+INFO:context_retriever:Retrieved 10 chunks from 1 buckets (avg similarity: 0.684)
+INFO:routes.classification:Using bucket context: chunk_cluster_3 with 5 relevant examples
+INFO:routes.classification:Restructured text into 2566 characters
+E0000 00:00:1758471713.276607   70386 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+INFO:gemini_classifier:Identified 11 problematic clauses
+INFO:routes.classification:Identified 11 problematic clauses with bucket-enhanced analysis
+INFO:routes.classification:Analysis completed: 11 validated clauses
+WARNING:middleware:Slow request detected: POST /api/classification/analyze/document took 88.72s
+INFO:middleware:Request completed: POST /api/classification/analyze/document - 200
+INFO:     127.0.0.1:51980 - "POST /api/classification/analyze/document HTTP/1.1" 200 OK
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 INFO:embedding_service:Rate limit reached, sleeping for 2.50 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.72 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.26 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 3.44 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.13 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.69 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.32 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 4.85 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.79 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.39 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.31 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.71 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.15 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.68 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.16 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 3.14 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.47 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.38 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.69 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.19 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.99 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.94 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.07 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 3.64 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.16 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 1.94 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.85 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.02 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.69 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.28 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.52 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.27 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.33 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.82 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.41 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.76 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.89 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.19 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 3.21 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.36 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.47 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.30 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.14 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.69 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.24 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.50 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.48 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.30 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 3.33 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.09 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.40 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.65 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 4.82 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 3.05 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.35 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.37 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.42 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 4.66 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.82 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 14.59 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.41 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.54 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.00 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.85 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.35 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.52 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.88 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 4.89 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 3.16 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.08 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.29 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.83 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.28 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.84 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.32 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.43 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.20 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.42 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 3.45 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.07 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.93 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.89 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.01 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 3.43 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.61 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.20 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.35 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.10 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 3.56 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.40 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.68 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 2.52 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 5.54 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 3.16 seconds
+INFO:embedding_service:Rate limit reached, sleeping for 15.40 seconds

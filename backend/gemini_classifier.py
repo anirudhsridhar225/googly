@@ -582,16 +582,43 @@ Please return the restructured text in clean markdown format:"""
             }]
         }
         
-        prompt = f"""Analyze this legal document for predatory or unfair clauses. Use the identify_problematic_clause tool for each problematic clause you find.
+        prompt = f"""You are a trusted legal advisor helping someone understand and protect themselves from unfair contract terms. Your goal is to identify clauses that could disadvantage, harm, or unfairly bind the person who is reviewing this contract.
 
-Focus on: unfair fees, hidden terms, automatic renewals, unilateral changes, excessive penalties, arbitration clauses, liability issues, data collection overreach, termination clauses, dispute resolution limitations.
+**ANALYSIS FRAMEWORK:**
+For each problematic clause you identify, use the identify_problematic_clause tool with these considerations:
 
-For each problematic clause:
-1. Find the exact text and character positions in the document
-2. Classify severity: CRITICAL (immediate danger), HIGH (significant risk), MEDIUM (moderate concern), LOW (minor issue)
-3. Categorize the type of problem
-4. Explain why it's problematic
-5. Suggest specific actions
+**SEVERITY LEVELS:**
+- **CRITICAL**: Immediate legal or financial danger - could result in major losses, legal jeopardy, or severe restrictions
+- **HIGH**: Significant unfair advantage to the other party - creates substantial risk or cost
+- **MEDIUM**: Moderately concerning terms that limit rights or create potential issues
+- **LOW**: Minor concerns or standard clauses that could be improved
+
+**CLAUSE CATEGORIES TO EXAMINE:**
+- **Financial Impact**: Hidden fees, excessive penalties, unclear costs, unfair payment terms
+- **Rights & Obligations**: Unbalanced responsibilities, waived rights, excessive commitments
+- **Termination & Cancellation**: Difficult exit clauses, automatic renewals, termination penalties
+- **Liability & Risk**: Unfair liability shifting, inadequate protections, indemnification overreach
+- **Intellectual Property**: Overly broad IP assignments, work-for-hire claims, invention ownership
+- **Confidentiality & Restrictions**: Excessive NDAs, non-compete overreach, trade secret claims
+- **Dispute Resolution**: Forced arbitration, jurisdiction limitations, fee-shifting provisions
+- **Modification & Control**: Unilateral change rights, consent requirements, governing terms
+- **Privacy & Data**: Data collection overreach, usage rights, sharing permissions
+- **Performance & Standards**: Unrealistic expectations, subjective criteria, undefined terms
+
+**EXPLANATION REQUIREMENTS:**
+For each clause, explain:
+1. **What it means in plain English** - translate legal jargon
+2. **Why it's problematic** - specific risks and disadvantages
+3. **Real-world impact** - how it could affect them practically
+4. **What's unfair about it** - comparison to balanced alternatives
+5. **Negotiation strategy** - specific language to propose or request
+
+**TONE & APPROACH:**
+- Write as if speaking directly to the person reviewing the contract
+- Use clear, non-legal language they can understand
+- Focus on practical consequences, not abstract legal concepts
+- Provide actionable advice they can use in negotiations
+- Be thorough but concise in explanations
 
 Document to analyze:
 {structured_text}"""

@@ -914,15 +914,22 @@ async def analyze_document(
             logger.info(f"Found {len(available_buckets)} available buckets")
             
             if available_buckets:
-                # Retrieve context from most relevant bucket
+                # Retrieve context from most relevant bucket with lower similarity threshold
+                # Temporarily lower the similarity threshold for better bucket matching
+                original_threshold = classifier.context_retriever.bucket_manager.similarity_threshold
+                classifier.context_retriever.bucket_manager.similarity_threshold = 0.3  # Lower threshold for better matching
+                
                 context_block = await classifier.context_retriever.retrieve_context(
-                    temp_document, available_buckets[:5]  # Use top 5 buckets for efficiency
+                    temp_document, available_buckets[:2]  # Use only top 2 buckets for speed
                 )
+                
+                # Restore original threshold
+                classifier.context_retriever.bucket_manager.similarity_threshold = original_threshold
                 
                 # Format context for AI analysis
                 context_chunks = []
                 if context_block and context_block.retrieved_chunks:
-                    for chunk in context_block.retrieved_chunks[:3]:  # Top 3 most relevant chunks
+                    for chunk in context_block.retrieved_chunks[:5]:  # Top 5 most relevant chunks
                         similarity_score = chunk.get('similarity_score', 0.0)
                         chunk_text = chunk.get('text', '')
                         context_chunks.append(f"**Reference Example ({similarity_score:.2f} similarity):**\n{chunk_text}\n")
@@ -937,7 +944,7 @@ async def analyze_document(
                         bucket_name=bucket_info.get('bucket_name', ''),
                         similarity_score=context_block.total_similarity_score,
                         document_count=bucket_info.get('document_count', 0),
-                        relevant_documents=[chunk.get('document_id', '') for chunk in context_block.retrieved_chunks[:3]]
+                        relevant_documents=[chunk.get('document_id', '') for chunk in context_block.retrieved_chunks[:5]]
                     )
                     logger.info(f"Using bucket context: {bucket_info.get('bucket_name', 'Unknown')} with {len(context_chunks)} relevant examples")
                 
@@ -953,9 +960,34 @@ async def analyze_document(
         
         # Phase 4: AI Processing - Bucket-Enhanced Clause Analysis with Tool Calls
         # Enhance the clause analysis with bucket context
-        enhanced_analysis_prompt = f"""Use the following reference context from similar legal documents to enhance your analysis:
+        enhanced_analysis_prompt = f"""You are an expert legal advisor helping someone review their contract. Your role is to protect their interests by identifying problematic, unfair, or predatory clauses that could harm them.
+
+**IMPORTANT CONTEXT FROM SIMILAR CONTRACTS:**
+The following examples are from similar legal documents that have been analyzed previously. Use these as reference patterns to identify similar issues in the current document:
 
 {context_information}
+
+**YOUR ANALYSIS APPROACH:**
+1. **Comprehensive Review**: Examine every clause for potential issues, not just obvious red flags
+2. **User Protection Focus**: Always consider how each clause could disadvantage the person uploading this contract
+3. **Practical Impact**: Explain real-world consequences, not just legal theory
+4. **Actionable Advice**: Provide specific negotiation points and alternatives
+5. **Reference Comparison**: Compare problematic clauses with the patterns shown in the reference examples above
+
+**PRIORITY AREAS TO EXAMINE:**
+- Financial obligations and hidden costs
+- Termination and cancellation rights
+- Liability and indemnification clauses
+- Intellectual property ownership
+- Confidentiality and non-compete restrictions
+- Dispute resolution and arbitration
+- Automatic renewals and extensions
+- Unilateral modification rights
+- Data privacy and usage rights
+- Force majeure and exceptional circumstances
+
+**ANALYSIS INSTRUCTIONS:**
+For each problematic clause you identify, consider how it compares to the reference patterns above and provide advice as if you're personally helping this person negotiate a fair contract.
 
 Now analyze this document:"""
         

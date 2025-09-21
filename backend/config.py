@@ -10,6 +10,10 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 from dotenv import load_dotenv
+import json
+import tempfile
+import certifi
+import ssl
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings
 
@@ -19,6 +23,94 @@ logger = logging.getLogger(__name__)
 
 # Load environment variables from .env file
 load_dotenv()
+
+# Immediately sanitize GOOGLE_APPLICATION_CREDENTIALS loaded from .env
+# This prevents libraries that read the env var during import from seeing
+# a path wrapped in quotes or a ~ that won't expand, which can cause early
+# failures (including SSL/TLS initialization errors) when the credentials
+# file can't be read.
+gac_raw = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+if gac_raw:
+    gac = gac_raw.strip()
+    if (gac.startswith('"') and gac.endswith('"')) or (
+        gac.startswith("'") and gac.endswith("'")
+    ):
+        gac = gac[1:-1]
+    gac = os.path.expanduser(gac)
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = gac
+
+# Ensure SSL certificate bundle is available for libraries that rely on OpenSSL
+# This prevents intermittent SSL verification errors when environment variables
+# (like GOOGLE_APPLICATION_CREDENTIALS) change how client libraries initialize TLS.
+if not os.getenv("SSL_CERT_FILE"):
+    try:
+        os.environ["SSL_CERT_FILE"] = certifi.where()
+    except Exception:
+        # If certifi isn't available for some reason, continue without setting it;
+        # the environment's default will be used and any SSL errors will surface normally.
+        pass
+
+# Diagnostic and fallback for intermittent SSLContext creation failures.
+def _ssl_diagnostic_and_fix():
+    try:
+        logger.debug("SSL diagnostic: SSL_CERT_FILE=%s SSL_CERT_DIR=%s REQUESTS_CA_BUNDLE=%s CURL_CA_BUNDLE=%s",
+                     os.getenv('SSL_CERT_FILE'), os.getenv('SSL_CERT_DIR'), os.getenv('REQUESTS_CA_BUNDLE'), os.getenv('CURL_CA_BUNDLE'))
+        # Try to create a TLS client context to detect early failures
+        ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        logger.debug("SSLContext creation OK")
+        return
+    except Exception as e:
+        logger.warning("Initial SSLContext creation failed: %s", e)
+
+    # Attempt to repair common misconfigurations by forcing certifi bundle and removing other bundle envs
+    try:
+        cert_path = certifi.where()
+        os.environ['SSL_CERT_FILE'] = cert_path
+        for var in ('REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE', 'SSL_CERT_DIR'):
+            if os.getenv(var):
+                logger.info("Unsetting %s (was %s)", var, os.getenv(var))
+                os.environ.pop(var, None)
+        # Retry SSLContext creation
+        ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        logger.info("SSLContext creation succeeded after forcing certifi bundle: %s", cert_path)
+    except Exception as e:
+        logger.error("SSLContext creation still failing after attempting fix: %s", e)
+
+
+_ssl_diagnostic_and_fix()
+
+# If SERVICE_KEY_JSON is provided (e.g., in Render), write it to a temporary
+# credentials file and set GOOGLE_APPLICATION_CREDENTIALS so Google libraries
+# can pick it up. This handles JSON strings with escaped newlines correctly.
+service_key_json = os.getenv("SERVICE_KEY_JSON")
+if service_key_json and not os.getenv("GOOGLE_APPLICATION_CREDENTIALS"):
+    try:
+        # If the env var was provided with surrounding quotes, strip them
+        if (service_key_json.startswith('"') and service_key_json.endswith('"')) or (
+            service_key_json.startswith("'") and service_key_json.endswith("'")
+        ):
+            service_key_json = service_key_json[1:-1]
+
+        # Try to parse to validate JSON; if parsing fails, keep raw string
+        parsed = None
+        try:
+            parsed = json.loads(service_key_json)
+        except Exception:
+            # Might already be a JSON string with escaped newlines; leave as-is
+            parsed = None
+
+        # Write to a secure temp file
+        fd, temp_path = tempfile.mkstemp(prefix="googly_service_account_", suffix=".json")
+        with os.fdopen(fd, "w") as f:
+            if parsed is not None:
+                json.dump(parsed, f)
+            else:
+                f.write(service_key_json)
+
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = temp_path
+    except Exception:
+        # Don't crash startup; let later validation report missing/invalid creds
+        pass
 
 
 class ConfigurationError(Exception):
@@ -161,9 +253,20 @@ class Settings(BaseSettings):
     @classmethod
     def validate_credentials_path(cls, v):
         """Validate Google Cloud credentials path if provided."""
-        if v and not Path(v).exists():
-            logger.warning(f"Google Cloud credentials file not found: {v}")
-        return v
+        if not v:
+            return v
+
+        # Strip surrounding quotes and expand ~
+        v_str = str(v).strip()
+        if (v_str.startswith('"') and v_str.endswith('"')) or (
+            v_str.startswith("'") and v_str.endswith("'")
+        ):
+            v_str = v_str[1:-1]
+        v_str = os.path.expanduser(v_str)
+
+        if not Path(v_str).exists():
+            logger.warning(f"Google Cloud credentials file not found: {v_str}")
+        return v_str
 
     model_config = {
         "env_file": ".env",

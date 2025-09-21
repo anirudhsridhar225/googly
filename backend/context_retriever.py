@@ -95,7 +95,7 @@ class ContextRetriever:
         document_chunks: List[Tuple[str, str, str]]  # (doc_id, chunk_text, bucket_id)
     ) -> List[Tuple[str, str, str, float]]:
         """
-        Calculate relevance scores for document chunks.
+        Calculate relevance scores for document chunks using PRE-COMPUTED embeddings.
         
         Args:
             query_embedding: Query document embedding
@@ -109,29 +109,67 @@ class ContextRetriever:
         
         scored_chunks = []
         
-        # Generate embeddings for chunks in batches
-        chunk_texts = [chunk[1] for chunk in document_chunks]
-        
         try:
-            chunk_embeddings = await self.embedding_generator.batch_generate_embeddings(
-                chunk_texts, batch_size=5
-            )
+            # Get unique document IDs to retrieve stored chunk embeddings
+            unique_doc_ids = list(set(chunk[0] for chunk in document_chunks))
+            logger.info(f"Using pre-computed embeddings for {len(unique_doc_ids)} documents, {len(document_chunks)} chunks")
             
-            # Calculate similarity scores
-            for i, (doc_id, chunk_text, bucket_id) in enumerate(document_chunks):
-                if i < len(chunk_embeddings):
-                    similarity = self.embedding_generator.calculate_similarity(
-                        query_embedding, chunk_embeddings[i]
-                    )
-                    scored_chunks.append((doc_id, chunk_text, bucket_id, similarity))
+            # Retrieve all stored chunk embeddings for these documents
+            from firestore_client import get_firestore_client
+            db = get_firestore_client()
+            
+            # Get stored chunk embeddings
+            doc_chunk_embeddings = {}
+            for doc_id in unique_doc_ids:
+                chunks_ref = db.collection('embedding_chunks').where('document_id', '==', doc_id)
+                chunk_docs = chunks_ref.stream()
+                
+                doc_chunks_data = []
+                for chunk_doc in chunk_docs:
+                    chunk_data = chunk_doc.to_dict()
+                    doc_chunks_data.append({
+                        'text': chunk_data.get('text', ''),
+                        'embedding': chunk_data.get('embedding', []),
+                        'start_char': chunk_data.get('start_char', 0),
+                        'end_char': chunk_data.get('end_char', 0)
+                    })
+                
+                doc_chunk_embeddings[doc_id] = doc_chunks_data
+            
+            # Calculate similarity scores using stored embeddings
+            for doc_id, chunk_text, bucket_id in document_chunks:
+                best_similarity = 0.0
+                
+                # Find matching stored chunk by text similarity
+                if doc_id in doc_chunk_embeddings:
+                    stored_chunks = doc_chunk_embeddings[doc_id]
+                    
+                    # Find the best matching stored chunk for this text chunk
+                    for stored_chunk in stored_chunks:
+                        stored_text = stored_chunk['text']
+                        stored_embedding = stored_chunk['embedding']
+                        
+                        # Check if this is the same or similar chunk (simple text matching)
+                        if len(stored_embedding) > 0 and (
+                            chunk_text.strip() in stored_text or 
+                            stored_text.strip() in chunk_text or
+                            abs(len(chunk_text) - len(stored_text)) < 50
+                        ):
+                            similarity = self.embedding_generator.calculate_similarity(
+                                query_embedding, stored_embedding
+                            )
+                            best_similarity = max(best_similarity, similarity)
+                
+                scored_chunks.append((doc_id, chunk_text, bucket_id, best_similarity))
             
             # Sort by relevance score (descending)
             scored_chunks.sort(key=lambda x: x[3], reverse=True)
+            logger.info(f"Calculated similarity scores for {len(scored_chunks)} chunks using stored embeddings")
             
         except Exception as e:
-            logger.error(f"Error calculating chunk relevance scores: {e}")
-            # Return chunks with zero scores if embedding fails
-            scored_chunks = [(doc_id, chunk_text, bucket_id, 0.0) 
+            logger.warning(f"Failed to use stored embeddings, falling back to simple scoring: {e}")
+            # Fallback: Use bucket centroids or simple text matching
+            scored_chunks = [(doc_id, chunk_text, bucket_id, 0.5) 
                            for doc_id, chunk_text, bucket_id in document_chunks]
         
         return scored_chunks

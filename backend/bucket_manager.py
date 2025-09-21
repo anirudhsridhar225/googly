@@ -149,11 +149,13 @@ class BucketManager:
         
         # Calculate similarities to all bucket centroids
         bucket_similarities = []
+        all_similarities = []  # Track all similarities for debugging
         
         for bucket in buckets:
             similarity = self.clustering_engine.calculate_cosine_similarity(
                 query_embedding, bucket.centroid_embedding
             )
+            all_similarities.append((bucket.bucket_name, similarity))
             
             if similarity >= min_similarity:
                 bucket_similarities.append((bucket, similarity))
@@ -163,7 +165,10 @@ class BucketManager:
         
         result = bucket_similarities[:top_k]
         
-        logger.debug(f"Found {len(result)} relevant buckets out of {len(buckets)} total")
+        # Log similarities for debugging
+        logger.info(f"Bucket similarities (threshold={min_similarity:.2f}): " + 
+                   ", ".join([f"{name}:{sim:.3f}" for name, sim in all_similarities[:5]]))
+        logger.info(f"Found {len(result)} relevant buckets out of {len(buckets)} total")
         
         return result
     

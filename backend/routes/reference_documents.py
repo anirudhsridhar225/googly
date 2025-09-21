@@ -130,16 +130,14 @@ async def get_services():
     if not document_processor:
         document_processor = DocumentProcessor()
     if not document_store:
-        firestore_client = get_firestore_client()
-        document_store = DocumentStore(firestore_client)
+        document_store = DocumentStore()
     if not bucket_manager:
         bucket_manager = BucketManager()
     if not bucket_store:
         firestore_client = get_firestore_client()
         bucket_store = BucketStore(firestore_client)
     if not rule_store:
-        firestore_client = get_firestore_client()
-        rule_store = RuleStore(firestore_client)
+        rule_store = RuleStore()
     if not audit_interface:
         audit_interface = AuditInterfaceService()
     
@@ -406,7 +404,7 @@ async def list_buckets(
     
     Args:
         limit: Maximum number of buckets to return
-        offset: Number of buckets to skip
+        offset: Number of buckets to skip (Note: offset is handled by slicing results)
         
     Returns:
         List of buckets
@@ -418,8 +416,11 @@ async def list_buckets(
         # Get services
         doc_processor, doc_store, bucket_mgr, bucket_st, rule_st, audit_int = await get_services()
         
-        # Query buckets
-        buckets = await bucket_st.list_buckets(limit=limit, offset=offset)
+        # Query buckets (without offset, we'll handle it manually)
+        all_buckets = await bucket_st.list_buckets(limit=limit + offset if limit else None)
+        
+        # Apply offset by slicing the results
+        buckets = all_buckets[offset:offset + limit] if limit else all_buckets[offset:]
         
         # Convert to response format
         responses = []

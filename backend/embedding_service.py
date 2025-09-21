@@ -303,6 +303,103 @@ class EmbeddingGenerator:
         logger.info(f"Completed batch embedding generation for {total_texts} texts")
         return embeddings
     
+    async def chunk_text(self, text: str, chunk_size: int = 3000, overlap: int = 200) -> List[str]:
+        """Split text into overlapping chunks.
+
+        Args:
+            text: The full cleaned text to chunk
+            chunk_size: Approximate max characters per chunk
+            overlap: Number of characters to overlap between consecutive chunks
+
+        Returns:
+            List of text chunks (strings)
+        """
+        if not text:
+            return []
+
+        chunks = []
+        start = 0
+        text_len = len(text)
+        while start < text_len:
+            end = start + chunk_size
+            chunk = text[start:end]
+            chunks.append(chunk)
+            if end >= text_len:
+                break
+            start = max(0, end - overlap)
+
+        logger.debug(f"Split text into {len(chunks)} chunks (chunk_size={chunk_size}, overlap={overlap})")
+        return chunks
+
+    async def generate_chunk_embeddings(
+        self,
+        text: str,
+        chunk_size: int = 3000,
+        overlap: int = 200,
+        batch_size: int = 8,
+    ) -> List[Dict[str, Any]]:
+        """
+        Split text into chunks, generate embeddings for each chunk, and return a list
+        of chunk metadata including embeddings.
+
+        Returns list items:
+            { 'chunk_index': int, 'text': str, 'embedding': List[float], 'text_length': int }
+        """
+        chunks = await self.chunk_text(text, chunk_size=chunk_size, overlap=overlap)
+        if not chunks:
+            return []
+
+        # Use batch embedding to leverage caching and rate limiting
+        embeddings = await self.batch_generate_embeddings(chunks, batch_size=batch_size)
+
+        if len(embeddings) != len(chunks):
+            raise GeminiAPIException("Mismatch between chunks and embeddings generated")
+
+        result = []
+        for i, (chunk_text, emb) in enumerate(zip(chunks, embeddings)):
+            result.append({
+                'chunk_index': i,
+                'text': chunk_text,
+                'embedding': emb,
+                'text_length': len(chunk_text)
+            })
+
+        return result
+
+    async def store_chunk_embeddings(self, document_id: str, chunk_infos: List[Dict[str, Any]]) -> None:
+        """
+        Persist chunk embeddings to Firestore under collection 'embedding_chunks'.
+
+        Each chunk document will contain: document_id, chunk_index, chunk_hash, embedding,
+        text_excerpt (truncated), text_length, created_at.
+        """
+        try:
+            client = get_firestore_client()
+            collection = client.collection('embedding_chunks')
+
+            for info in chunk_infos:
+                chunk_text = info.get('text', '')
+                chunk_hash = hashlib.sha256(chunk_text.encode('utf-8')).hexdigest()
+                doc_data = {
+                    'document_id': document_id,
+                    'chunk_index': info.get('chunk_index'),
+                    'chunk_hash': chunk_hash,
+                    'embedding': info.get('embedding'),
+                    'text_excerpt': (chunk_text[:500] + '...') if len(chunk_text) > 500 else chunk_text,
+                    'text_length': info.get('text_length'),
+                    'created_at': datetime.utcnow().isoformat()
+                }
+
+                # Use a deterministic id to allow idempotent writes (document_id + chunk_index)
+                doc_id = f"{document_id}_{info.get('chunk_index')}"
+                collection.document(doc_id).set(doc_data)
+
+            logger.info(f"Stored {len(chunk_infos)} chunk embeddings for document {document_id}")
+
+        except Exception as e:
+            error_logger.log_exception(e, context={"operation": "store_chunk_embeddings", "document_id": document_id})
+            logger.warning(f"Failed to store chunk embeddings for {document_id}: {e}")
+
     async def generate_query_embedding(self, query_text: str) -> List[float]:
         """
         Generate embedding for a query text (used for similarity search).
